@@ -3,6 +3,7 @@
     "start": "nodemon backend/server.js"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "colors": "^1.4.0",
     "dotenv": "^16.4.5",
