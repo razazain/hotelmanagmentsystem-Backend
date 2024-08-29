@@ -10,8 +10,6 @@ const bcrypt = require("bcryptjs");
 // @access   private
 const getUserAccount = async (req, res) => {
     const userDetail = await UserModel.find();
-
-
     res.status(200).json(userDetail)
 }
 
@@ -48,7 +46,7 @@ const createUserAccount = async (req, res) => {
         userEmail,
         phoneNumber,
         address,
-        status,
+        status
         
     } = req.body;
 
@@ -89,8 +87,7 @@ const createUserAccount = async (req, res) => {
                     address: address,
                     status: status,
                     //by default Role is guest after registeration admin can update the user Role 
-                    //in model set default role is guest
-                    // userRole: "guest"
+                    //set default role is guest in UserModel
                 })
 
 
@@ -112,7 +109,7 @@ const createUserAccount = async (req, res) => {
 
 //---------------------------User Registration Update API Start ------------------
 // @Request  PUT
-// @Route    /api/useraccount/:id
+// @Route    /api/useraccount/id
 // @access   private
 
 
@@ -169,15 +166,13 @@ const updateUserAccount = async (req, res) => {
 
 //---------------------------User Registration Update API End ------------------
 
-//---------------------------User Registration Delete API Start ------------------
-
-
-
-
-
-
 
 //---------------------------User Registration Delete API Start ------------------
+// @Request  DELETE
+// @Route    /api/useraccount/id
+// @access   private
+
+
 
 const deleteUserAccount = async(req,res)=>{
 
