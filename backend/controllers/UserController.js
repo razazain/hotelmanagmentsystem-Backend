@@ -206,16 +206,6 @@ const deleteUserAccount = async(req,res)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     getUserAccount,
     createUserAccount,
