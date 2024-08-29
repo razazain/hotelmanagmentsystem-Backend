@@ -49,6 +49,7 @@ const createUserAccount = async (req, res) => {
         phoneNumber,
         address,
         status,
+        
     } = req.body;
 
 
@@ -70,7 +71,7 @@ const createUserAccount = async (req, res) => {
 
 
                 //checking email is already rgistered
-                var Email_availability_db = await userModel.findOne({
+                var Email_availability_db = await UserModel.findOne({
                     "userEmail": userEmail
                 });
 
@@ -78,7 +79,7 @@ const createUserAccount = async (req, res) => {
                     return res.status(400).json({ error: "Email is already taken" })
                 }
 
-                const newUser = await userModel.create({
+                const newUser = await UserModel.create({
                     userName: userName,
                     userEmail: userEmail,
                     userPassword: hashedPassword,
@@ -87,8 +88,9 @@ const createUserAccount = async (req, res) => {
                     phoneNumber: phoneNumber,
                     address: address,
                     status: status,
-                    //by default Role is guest after register admin can change the user Role 
-                    userRole: "guest"
+                    //by default Role is guest after registeration admin can update the user Role 
+                    //in model set default role is guest
+                    // userRole: "guest"
                 })
 
 
@@ -108,11 +110,117 @@ const createUserAccount = async (req, res) => {
 
 //---------------------------User Registration API End ------------------
 
+//---------------------------User Registration Update API Start ------------------
+// @Request  PUT
+// @Route    /api/useraccount/:id
+// @access   private
+
+
+const updateUserAccount = async (req, res) => {
+
+    const id = req.params.id;
+
+    const {
+        userName,
+        userPassword,
+        userRole,
+        firstName,
+        lastName,
+        userEmail,
+        phoneNumber,
+        address,
+        status,
+    } = req.body;
+
+    if (!userName) {
+        return res.status(400).json({ error: 'user name is required' });
+    }
+
+    if (!userEmail) {
+        return res.status(400).json({ error: 'user email is required' });
+    }
+
+    if (!userPassword) {
+        return res.status(400).json({ error: 'user password is required' });
+    }
+
+    // Update Data Object
+    const updateData = {
+        userName: userName,
+        userEmail: userEmail,
+        userPassword: userPassword,
+        userRole: userRole,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        address: address,
+        status: status
+    }
+
+    // Find todo By Id and Update
+    const AvailableUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });
+
+    console.log(AvailableUser)
+
+    res.status(200).json({ success: 'Account Updated Successfull' })
+
+
+}
+
+//---------------------------User Registration Update API End ------------------
+
+//---------------------------User Registration Delete API Start ------------------
+
+
+
+
+
+
+
+//---------------------------User Registration Delete API Start ------------------
+
+const deleteUserAccount = async(req,res)=>{
+
+    const id = req.params.id;
+
+    const DeleteUser = await UserModel.findByIdAndDelete(id) 
+
+    if(!DeleteUser){
+        res.status(400).json({error:`account not deleted`})
+
+    }
+
+    res.status(200).json({success:'account deleted successfully'})
+}
+
+
+//---------------------------User Registration Delete API End ------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports = {
     getUserAccount,
-    createUserAccount
+    createUserAccount,
+    updateUserAccount,
+    deleteUserAccount 
 };
 
 
