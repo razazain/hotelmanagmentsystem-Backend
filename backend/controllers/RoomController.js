@@ -27,12 +27,37 @@ const createRoom = async (req, res) => {
        
     } = req.body;
 
+
+    if (!roomNumber) {
+        return res.status(400).json({ error: 'Room number is required' });
+    }
+
+    if (!type) {
+        return res.status(400).json({ error: 'Room Type is required' });
+    }
+
+    if (!price) {
+        return res.status(400).json({ error: 'Room Price is required' });
+    }
+    if (!status) {
+        return res.status(400).json({ error: 'Room status is required' });
+    }
+
+    if (!bedType) {
+        return res.status(400).json({ error: 'Room bedtype is required' });
+    }
+
+    if (!size) {
+        return res.status(400).json({ error: 'Room size is required' });
+    }
+
     const checkRoomNumber = await RoomModel.findOne({
         "roomNumber": roomNumber
     });
     if (checkRoomNumber) {
         return res.status(400).json({ error: "Room Number is already created try another one" })
     }
+    
     try {
         const newRoom = await RoomModel.create({
             roomNumber: roomNumber,

@@ -11,6 +11,7 @@ app.use(express.urlencoded({extended:true}))
 //calling the api
 app.use('/api/useraccount', require('./routes/userRoutes'))
 app.use('/api/room', require('./routes/roomRoutes'))
+app.use('/api/booking', require('./routes/bookingRoute'))
 
 
 
