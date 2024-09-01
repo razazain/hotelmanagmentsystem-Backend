@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended:true}))
 app.use('/api/useraccount', require('./routes/userRoutes'))
 app.use('/api/room', require('./routes/roomRoutes'))
 app.use('/api/booking', require('./routes/bookingRoute'))
+app.use('/api/housekeeping', require('./routes/housekeepingRoute'));
 
 
 
