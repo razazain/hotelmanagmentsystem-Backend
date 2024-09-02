@@ -13,6 +13,10 @@ app.use('/api/useraccount', require('./routes/userRoutes'))
 app.use('/api/room', require('./routes/roomRoutes'))
 app.use('/api/booking', require('./routes/bookingRoute'))
 app.use('/api/housekeeping', require('./routes/housekeepingRoute'));
+app.use('/api/feedback', require('./routes/feedbackRoute'));
+app.use('/api/maintenanceRequests', require('./routes/MaintenanceRequestRoute'));
+app.use('/api/payments', require('./routes/paymentRoute'));
+
 
 
 
