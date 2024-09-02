@@ -16,9 +16,9 @@ const getHousekeepingDetails = async (req, res) => {
 // @Route    /api/housekeeping
 // @access   private
 const createHousekeeping = async (req, res) => {
-    const { room, assignedTo, task, status, scheduledTime } = req.body;
+    const { room, assignedTo, task, status  } = req.body;
 
-    if (!room || !assignedTo || !task || !scheduledTime) {
+    if (!room || !assignedTo || !task  ) {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
@@ -28,7 +28,7 @@ const createHousekeeping = async (req, res) => {
             assignedTo,
             task,
             status,
-            scheduledTime
+            
         });
         res.status(201).json({ success: "Housekeeping task created successfully", data: newHousekeeping });
     } catch (error) {
@@ -41,16 +41,16 @@ const createHousekeeping = async (req, res) => {
 // @access   private
 const updateHousekeeping = async (req, res) => {
     const { id } = req.params;
-    const { room, assignedTo, task, status, scheduledTime } = req.body;
+    const { room, assignedTo, task, status  } = req.body;
 
-    if (!room || !assignedTo || !task || !scheduledTime) {
+    if (!room || !assignedTo || !task ) {
         return res.status(400).json({ error: 'All fields are required' });
     }
 
     try {
         const updatedHousekeeping = await HousekeepingModel.findByIdAndUpdate(
             id,
-            { room, assignedTo, task, status, scheduledTime },
+            { room, assignedTo, task, status  },
             { new: true }
         );
 
