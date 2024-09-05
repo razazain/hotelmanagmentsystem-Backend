@@ -45,7 +45,8 @@ const createUserAccount = async (req, res) => {
         lastName,
         userEmail,
         phoneNumber,
-        status
+        status,
+        userRole
         
     } = req.body;
 
@@ -83,7 +84,7 @@ const createUserAccount = async (req, res) => {
                     firstName: firstName,
                     lastName: lastName,
                     phoneNumber: phoneNumber,
-                  
+                    userRole: userRole,
                     status: status,
                     //by default Role is guest after registeration admin can update the user Role 
                     //set default role is guest in UserModel

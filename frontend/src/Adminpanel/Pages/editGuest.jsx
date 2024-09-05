@@ -1,60 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../Components/Header';
 import Sidebar from '../Components/Sidebar';
-import axios from 'axios';
 
-
-const AddGuest = () => {
+const EditGuest = () => {
   const [formData, setFormData] = useState({
     userName: '',
     userPassword: '',
-    userRole: 'guest', // default value as per model
+    userRole: 'guest', // Default value as per model
     firstName: '',
     lastName: '',
     userEmail: '',
     phoneNumber: '',
-    status: 'active' // default status
+    status: 'active', // Default status
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [alertMessage, setAlertMessage] = useState(null); // To hold alert messages
-  const [alertType, setAlertType] = useState(''); // To hold alert type (success or danger)
+  const navigate = useNavigate(); // useNavigate for navigation
+  const { id } = useParams(); // Get guest ID from URL parameters
 
+  // Fetch existing guest data when the component loads
+  useEffect(() => {
+    axios.get(`/api/useraccount/${id}`)
+      .then((response) => {
+        setFormData(response.data); // Populate the form with existing data
+      })
+      .catch((error) => {
+        console.error('Error fetching guest data:', error);
+      });
+  }, [id]);
+
+  // Handle form input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission to update the guest data
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/useraccount', formData);
-      setAlertMessage('User added successfully!');
-      setAlertType('success'); // Show success alert
-
-      // Clear form fields after successful submission
-      setFormData({
-        userName: '',
-        userPassword: '',
-        userRole: 'guest',
-        firstName: '',
-        lastName: '',
-        userEmail: '',
-        phoneNumber: '',
-        status: 'active'
-      });
+      await axios.put(`/api/useraccount/${id}`, formData);
+      // After successful update, navigate to the guest list page
+      navigate('/guestList');
     } catch (error) {
-      setAlertMessage('Error adding user. Please try again.');
-      setAlertType('danger'); // Show error alert
+      console.error('Error updating guest data:', error);
     }
-
-    // Hide alert after 5 seconds
-    setTimeout(() => {
-      setAlertMessage(null);
-    }, 5000);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
@@ -67,29 +57,13 @@ const AddGuest = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Add Guest</h3>
+                <h3 className="page-title mt-5">Edit Guest</h3>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-lg-12">
-              {/* Display Bootstrap alert message */}
-              {alertMessage && (
-                <div className={`alert alert-${alertType} alert-dismissible fade show`} role="alert">
-                  {alertMessage}
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="alert"
-                    aria-label="Close"
-                    onClick={() => setAlertMessage(null)}
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              )}
-
               <form onSubmit={handleSubmit}>
                 <div className="row formtype">
                   <div className="col-md-4">
@@ -164,25 +138,14 @@ const AddGuest = () => {
                   <div className="col-md-4">
                     <div className="form-group">
                       <label>Password</label>
-                      <div className="input-group">
-                        <input
-                          className="form-control"
-                          type={showPassword ? 'text' : 'password'}
-                          name="userPassword"
-                          value={formData.userPassword}
-                          onChange={handleChange}
-                          required
-                        />
-                        <div className="input-group-append">
-                          <button
-                            type="button"
-                            className="btn btn-outline-secondary"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? 'Hide' : 'Show'}
-                          </button>
-                        </div>
-                      </div>
+                      <input
+                        className="form-control"
+                        type="password"
+                        name="userPassword"
+                        value={formData.userPassword}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
 
@@ -194,7 +157,6 @@ const AddGuest = () => {
                         name="userRole"
                         value={formData.userRole}
                         onChange={handleChange}
-                        required
                       >
                         <option value="admin">Admin</option>
                         <option value="manager">Manager</option>
@@ -219,8 +181,9 @@ const AddGuest = () => {
                     </div>
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary buttonedit1">
-                  Create User
+
+                <button type="submit" className="btn btn-primary">
+                  Update Guest
                 </button>
               </form>
             </div>
@@ -231,4 +194,4 @@ const AddGuest = () => {
   );
 };
 
-export default AddGuest;
+export default EditGuest;

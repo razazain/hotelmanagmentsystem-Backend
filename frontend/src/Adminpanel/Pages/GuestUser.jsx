@@ -6,17 +6,35 @@ import { Link } from 'react-router-dom';
 
 const GuestUser = () => {
   const [guests, setGuests] = useState([]);
+  const [guestToDelete, setGuestToDelete] = useState(null); 
 
-  // Fetch data from the API
   useEffect(() => {
-    axios.get('/api/useraccount')
-      .then(response => {
-        setGuests(response.data); // Set the data from API
-      })
-      .catch(error => {
-        console.error('There was an error fetching the guests data!', error);
-      });
+    fetchGuests();
   }, []);
+
+  const fetchGuests = async () => {
+    try {
+      const response = await axios.get('/api/useraccount');
+      setGuests(response.data);
+    } catch (error) {
+      console.error('There was an error fetching the guests data!', error);
+    }
+  };
+
+
+  const handleDelete = async () => {
+    try {
+      if (guestToDelete) {
+        await axios.delete(`/api/useraccount/${guestToDelete}`);
+        setGuests(guests.filter(guest => guest._id !== guestToDelete)); 
+        setGuestToDelete(null); 
+
+        window.$('#delete_asset').modal('hide');
+      }
+    } catch (error) {
+      console.error('There was an error deleting the guest!', error);
+    }
+  };
 
   return (
     <div>
@@ -73,10 +91,16 @@ const GuestUser = () => {
                                   <i className="fas fa-ellipsis-v ellipse_color"></i>
                                 </Link>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                  <Link className="dropdown-item" to={`/edit-guest/${guest._id}`}>
+                                  <Link className="dropdown-item" to={`/editGuest/${guest._id}`}>
                                     <i className="fas fa-pencil-alt m-r-5"></i> Edit
                                   </Link>
-                                  <Link className="dropdown-item" to="#" data-toggle="modal" data-target="#delete_asset">
+                                  <Link
+                                    className="dropdown-item"
+                                    to="#"
+                                    data-toggle="modal"
+                                    data-target="#delete_asset"
+                                    onClick={() => setGuestToDelete(guest._id)} 
+                                  >
                                     <i className="fas fa-trash-alt m-r-5"></i> Delete
                                   </Link>
                                 </div>
@@ -92,23 +116,32 @@ const GuestUser = () => {
             </div>
           </div>
         </div>
+
+        {/* Delete confirmation modal */}
         <div id="delete_asset" className="modal fade delete-modal" role="dialog">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
                 <img src="assets/img/sent.png" alt="" width="50" height="46" />
-                <h3 className="delete_class">Are you sure you want to delete this Asset?</h3>
+                <h3 className="delete_class">Are you sure you want to delete this Guest?</h3>
                 <div className="m-t-20">
                   <Link to="#" className="btn btn-white" data-dismiss="modal">Close</Link>
-                  <button type="submit" className="btn btn-danger">Delete</button>
+                  <button
+                    type="submit"
+                    className="btn btn-danger ml-3"
+                    onClick={handleDelete} // Call delete function
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
-}
+};
 
 export default GuestUser;
