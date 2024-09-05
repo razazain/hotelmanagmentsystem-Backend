@@ -68,7 +68,12 @@ const updatePayment = async (req, res) => {
     try {
         const updatedPayment = await PaymentModel.findByIdAndUpdate(
             id,
-            { booking, amount, paymentMethod, paymentStatus },
+            {
+                booking,
+                amount,
+                paymentMethod,
+                paymentStatus
+            },
             { new: true }
         );
 

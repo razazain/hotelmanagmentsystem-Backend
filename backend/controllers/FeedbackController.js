@@ -7,7 +7,7 @@ const FeedbackModel = require('../models/FeedbackModel');
 
 const getAllFeedbacks = async (req, res) => {
     try {
-        const feedbacks = await FeedbackModel.find().populate('user').populate('booking');
+        const feedbacks = await FeedbackModel.find().populate('user');
         res.status(200).json(feedbacks);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching feedbacks' });
@@ -23,7 +23,7 @@ const getFeedbackById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const feedback = await FeedbackModel.findById(id).populate('user').populate('booking');
+        const feedback = await FeedbackModel.findById(id).populate('user');
         if (!feedback) {
             return res.status(404).json({ error: 'Feedback not found' });
         }
@@ -39,12 +39,11 @@ const getFeedbackById = async (req, res) => {
 // @access   Private
 
 const createFeedback = async (req, res) => {
-    const { user, booking, comments } = req.body;
+    const { user, comments } = req.body;
 
     try {
         const newFeedback = await FeedbackModel.create({
             user,
-            booking,
             comments
         });
 
@@ -61,12 +60,12 @@ const createFeedback = async (req, res) => {
 
 const updateFeedback = async (req, res) => {
     const { id } = req.params;
-    const { user, booking, comments } = req.body;
+    const { user,  comments } = req.body;
 
     try {
         const updatedFeedback = await FeedbackModel.findByIdAndUpdate(
             id,
-            { user, booking, comments },
+            { user, comments },
             { new: true }
         );
 
