@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     userEmail: { type: String, required: true },
     phoneNumber: { type: Number },
-    address: { type: String },
     status: { type: String, enum: ['active', 'inactive'], default: 'active' }
 }, { timestamps: true });
 

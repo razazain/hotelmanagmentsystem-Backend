@@ -7,10 +7,10 @@ const Header = () => {
         <div>
             <div className="header">
                 <div className="header-left">
-                    <Link to="index.html" className="logo">
+                    <Link to="/Dashboard" className="logo">
                         <h4><b className="logo">LuxuryStay</b></h4>
                     </Link>
-                    <Link to="index.html" className="logo logo-small"> <b>LS</b> </Link>
+                    <Link to="/Dashboard" className="logo logo-small"> <b>LS</b> </Link>
                 </div>
                 {/* javascript:void(0); */}
                 <Link to="#" id="toggle_btn"> <i className="fe fe-text-align-left"></i> </Link>
@@ -22,9 +22,9 @@ const Header = () => {
                             className="user-img"><b>PROFILE</b></span> </Link>
                         <div className="dropdown-menu">
                             <div className="user-header">
-                                <Link className="dropdown-item" to="profile.html">My Profile</Link> <Link className="dropdown-item"
-                                    to="settings.html">Account Settings</Link> <Link className="dropdown-item"
-                                        to="login.html">Logout</Link>
+                                <Link className="dropdown-item" to="#">My Profile</Link> <Link className="dropdown-item"
+                                    to="#">Account Settings</Link> <Link className="dropdown-item"
+                                        to="#">Logout</Link>
                             </div>
                         </div>
                     </li>

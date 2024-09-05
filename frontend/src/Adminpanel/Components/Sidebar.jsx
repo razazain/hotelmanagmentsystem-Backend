@@ -8,64 +8,36 @@ const Sidebar = () => {
                 <div className="sidebar-inner slimscroll">
                     <div id="sidebar-menu" className="sidebar-menu">
                         <ul>
-                            <li className="active"> <Link to="index.html"><i className="fas fa-tachometer-alt"></i>
+                            <li className="active"> <Link to="/Dashboard"><i className="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span></Link> </li>
                             <li className="list-divider"></li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> User </span> <span
-                                className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="#"> Guest </Link></li>
-                                    <li><Link to="#"> Manager </Link></li>
-                                    <li><Link to="#"> Housekeeping </Link></li>
-                                </ul>
+                            <li className="submenu mt-3 ml-3" ><i className="fas fa-suitcase"></i> <b className='ml-1'> User </b></li>
+                            <li className="submenu"><Link to="/GuestUser"> Guest </Link></li>
+                            <li className="submenu"><Link to="/ManagerUser"> Manager </Link></li>
+                            <li className="submenu"><Link to="/HousekeepingUser"> Housekeeping </Link></li>
+
+                            <hr/>
+
+                            <li className="submenu"> <Link to="/Room"><i className="fas fa-key"></i> <span> Rooms </span></Link>
                             </li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-key"></i> <span> Rooms </span> <span
-                                className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="all-rooms.html">All Rooms </Link></li>
-                                    <li><Link to="add-room.html"> Add Rooms </Link></li>
-                                </ul>
+                            <li className="submenu"> <Link to="/Booking"><i className="fas fa-suitcase"></i> <span> Booking </span> </Link>
                             </li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> Booking </span> <span
-                                className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="all-booking.html"> All Booking </Link></li>
-                                    <li><Link to="add-booking.html"> Add Booking </Link></li>
-                                </ul>
+                            <li className="submenu"> <Link to="/Payment"><i className="fas fa-suitcase"></i> <span> Payments </span> </Link>
                             </li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> Payments </span> <span
-                                className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="payments.html"> All Payments </Link></li>
-                                    <li><Link to="#"> Add Payments </Link></li>
-                                </ul>
+                            <li className="submenu"> <Link to="/MaintainanceRequest"><i className="fas fa-suitcase"></i> <span> Maintainance Request
+                            </span> </Link>
                             </li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> Maintainance Request
-                            </span> <span className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="#"> All Request </Link></li>
-                                    <li><Link to="#"> Add Request </Link></li>
-                                </ul>
+                            <li className="submenu"> <Link to="/Housekeeping"><i className="fas fa-suitcase"></i> <span> Housekeeping </span>
+                            </Link>
                             </li>
 
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> Housekeeping </span>
-                                <span className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="#"> All Housekeeping </Link></li>
-                                    <li><Link to="#"> Add Housekeeping </Link></li>
-                                </ul>
-                            </li>
-
-                            <li className="submenu"> <Link to="#"><i className="fas fa-suitcase"></i> <span> Feedback </span>
-                                <span className="menu-arrow"></span></Link>
-                                <ul className="submenu_className" style={{display: "none"}}>
-                                    <li><Link to="#"> All Feedback </Link></li>
-                                </ul>
+                            <li className="submenu"> <Link to="/Feedback"><i className="fas fa-suitcase"></i> <span> Feedback </span>
+                            </Link>
                             </li>
                         </ul>
                     </div>
