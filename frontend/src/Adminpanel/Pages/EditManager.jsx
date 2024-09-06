@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '../Components/Header';
 import Sidebar from '../Components/Sidebar';
 
-const EditGuest = () => {
+const EditManager = () => {
   const [formData, setFormData] = useState({
     userName: '',
     userPassword: '',
@@ -28,8 +28,8 @@ const EditGuest = () => {
         setFormData(response.data); 
       })
       .catch((error) => {
-        console.error('Error fetching guest data:', error);
-        setErrorMessage('Error fetching guest data');
+        console.error('Error fetching Manager data:', error);
+        setErrorMessage('Error fetching Manager data');
       });
   }, [id]);
 
@@ -42,14 +42,14 @@ const EditGuest = () => {
     e.preventDefault();
     try {
       await axios.put(`/api/useraccount/${id}`, formData);
-      setSuccessMessage('User updated successfully!');
+      setSuccessMessage('Manager updated successfully!');
       setErrorMessage('');
       setTimeout(() => {
-        navigate('/GuestUser');
+        navigate('/ManagerUser');
       }, 2000); 
     } catch (error) {
-      console.error('Error updating guest data:', error);
-      setErrorMessage('Error updating guest data');
+      console.error('Error updating Manager data:', error);
+      setErrorMessage('Error updating Manager data');
       setSuccessMessage('');
     }
   };
@@ -64,7 +64,7 @@ const EditGuest = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Edit Guest</h3>
+                <h3 className="page-title mt-5">Edit Manager</h3>
               </div>
             </div>
           </div>
@@ -76,7 +76,7 @@ const EditGuest = () => {
             </div>
           )}
 
-          {/* Bootstrap alert for error message */}
+       
           {errorMessage && (
             <div className="alert alert-danger" role="alert">
               {errorMessage}
@@ -204,7 +204,7 @@ const EditGuest = () => {
                 </div>
 
                 <button type="submit" className="btn btn-primary">
-                  Update Guest
+                  Update Manager
                 </button>
               </form>
             </div>
@@ -215,4 +215,4 @@ const EditGuest = () => {
   );
 };
 
-export default EditGuest;
+export default EditManager;

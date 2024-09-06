@@ -5,10 +5,11 @@ const {
     getUserAccount,
     createUserAccount,
     updateUserAccount,
-    deleteUserAccount
+    deleteUserAccount,
+    getUserAccountById
 } = require ("../controllers/UserController");
 
 router.route('/').get(getUserAccount).post(createUserAccount)
-router.route('/:id').put(updateUserAccount).delete(deleteUserAccount);
+router.route('/:id').get(getUserAccountById).put(updateUserAccount).delete(deleteUserAccount);
 
 module.exports = router;

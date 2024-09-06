@@ -15,6 +15,23 @@ const getUserAccount = async (req, res) => {
 
 
 
+// @Request  GET by ID
+// @Route    /api/useraccount/:id
+// @access   private
+const getUserAccountById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const userDetail = await UserModel.findById(id);
+        if (!userDetail) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json(userDetail);
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
 
 //Email validation
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -202,9 +219,10 @@ const deleteUserAccount = async(req,res)=>{
 
 module.exports = {
     getUserAccount,
+    getUserAccountById,
     createUserAccount,
     updateUserAccount,
-    deleteUserAccount 
+    deleteUserAccount
 };
 
 

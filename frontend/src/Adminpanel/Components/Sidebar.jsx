@@ -13,9 +13,10 @@ const Sidebar = () => {
                             <li className="list-divider"></li>
 
                             <li className="submenu mt-3 ml-3" ><i className="fas fa-suitcase"></i> <b className='ml-1'> User </b></li>
-                            <li className="submenu"><Link to="/GuestUser"> Guest </Link></li>
+                            <li className="submenu"><Link to="/AdminUser"> Admin </Link></li>
                             <li className="submenu"><Link to="/ManagerUser"> Manager </Link></li>
                             <li className="submenu"><Link to="/HousekeepingUser"> Housekeeping </Link></li>
+                            <li className="submenu"><Link to="/GuestUser"> Guest </Link></li>
 
                             <hr/>
 
