@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Header from '../Components/Header';
-import Sidebar from '../Components/Sidebar';
+import Header from '../../Components/Header';
+import Sidebar from '../../Components/Sidebar';
 import { Link } from 'react-router-dom';
 
-const AdminUser = () => {
+const ManagerUser = () => {
   const [guests, setGuests] = useState([]);
   const [guestToDelete, setGuestToDelete] = useState(null); 
 
@@ -17,7 +17,7 @@ const AdminUser = () => {
       const response = await axios.get('/api/useraccount');
       setGuests(response.data);
     } catch (error) {
-      console.error('There was an error fetching the admin data!', error);
+      console.error('There was an error fetching the Manager data!', error);
     }
   };
 
@@ -31,12 +31,12 @@ const AdminUser = () => {
         window.$('#delete_asset').modal('hide');
       }
     } catch (error) {
-      console.error('There was an error deleting the Admin!', error);
+      console.error('There was an error deleting the manager!', error);
     }
   };
 
 
-  const guestUsers = guests.filter(guest => guest.userRole === 'admin');
+  const guestUsers = guests.filter(guest => guest.userRole === 'manager');
 
   return (
     <div>
@@ -49,8 +49,8 @@ const AdminUser = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="mt-5">
-                  <h4 className="card-title float-left mt-2">Admin</h4>
-                  <Link to="/addGuest" className="btn btn-primary float-right veiwbutton">Add Admin</Link>
+                  <h4 className="card-title float-left mt-2">Manager</h4>
+                  <Link to="/addGuest" className="btn btn-primary float-right veiwbutton">Add Manager</Link>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@ const AdminUser = () => {
                                   <i className="fas fa-ellipsis-v ellipse_color"></i>
                                 </Link>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                  <Link className="dropdown-item" to={`/EditAdmin/${guest._id}`}>
+                                  <Link className="dropdown-item" to={`/EditManager/${guest._id}`}>
                                     <i className="fas fa-pencil-alt m-r-5"></i> Edit
                                   </Link>
                                   <Link
@@ -119,13 +119,12 @@ const AdminUser = () => {
           </div>
         </div>
 
-        {/* Delete confirmation modal */}
         <div id="delete_asset" className="modal fade delete-modal" role="dialog">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
                 <img src="assets/img/sent.png" alt="" width="50" height="46" />
-                <h3 className="delete_class">Are you sure you want to delete this Admin?</h3>
+                <h3 className="delete_class">Are you sure you want to delete this Manager?</h3>
                 <div className="m-t-20">
                   <Link to="#" className="btn btn-white" data-dismiss="modal">Close</Link>
                   <button
@@ -146,4 +145,4 @@ const AdminUser = () => {
   );
 };
 
-export default AdminUser;
+export default ManagerUser;

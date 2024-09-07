@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../Components/Header';
-import Sidebar from '../Components/Sidebar';
+import Header from '../../Components/Header';
+import Sidebar from '../../Components/Sidebar';
 import axios from 'axios';
 
 

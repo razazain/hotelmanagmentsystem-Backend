@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../Components/Header';
-import Sidebar from '../Components/Sidebar';
+import Header from '../../Components/Header';
+import Sidebar from '../../Components/Sidebar';
 
-const EditManager = () => {
+const EditHousekeeping = () => {
   const [formData, setFormData] = useState({
     userName: '',
     userPassword: '',
@@ -28,8 +28,8 @@ const EditManager = () => {
         setFormData(response.data); 
       })
       .catch((error) => {
-        console.error('Error fetching Manager data:', error);
-        setErrorMessage('Error fetching Manager data');
+        console.error('Error fetching Housekeeping data:', error);
+        setErrorMessage('Error fetching Housekeeping data');
       });
   }, [id]);
 
@@ -42,14 +42,14 @@ const EditManager = () => {
     e.preventDefault();
     try {
       await axios.put(`/api/useraccount/${id}`, formData);
-      setSuccessMessage('Manager updated successfully!');
+      setSuccessMessage('Housekeeping updated successfully!');
       setErrorMessage('');
       setTimeout(() => {
-        navigate('/ManagerUser');
+        navigate('/HousekeepingUser');
       }, 2000); 
     } catch (error) {
-      console.error('Error updating Manager data:', error);
-      setErrorMessage('Error updating Manager data');
+      console.error('Error updating Housekeeping data:', error);
+      setErrorMessage('Error updating Housekeeping data');
       setSuccessMessage('');
     }
   };
@@ -64,7 +64,7 @@ const EditManager = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Edit Manager</h3>
+                <h3 className="page-title mt-5">Edit Housekeeping</h3>
               </div>
             </div>
           </div>
@@ -204,7 +204,7 @@ const EditManager = () => {
                 </div>
 
                 <button type="submit" className="btn btn-primary">
-                  Update Manager
+                  Update Housekeeping
                 </button>
               </form>
             </div>
@@ -215,4 +215,4 @@ const EditManager = () => {
   );
 };
 
-export default EditManager;
+export default EditHousekeeping;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../Components/Header';
-import Sidebar from '../Components/Sidebar';
+import Header from '../../Components/Header';
+import Sidebar from '../../Components/Sidebar';
 
 const EditGuest = () => {
   const [formData, setFormData] = useState({
