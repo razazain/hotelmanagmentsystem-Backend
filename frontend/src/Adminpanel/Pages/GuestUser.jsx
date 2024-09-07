@@ -118,7 +118,6 @@ const GuestUser = () => {
           </div>
         </div>
 
-        {/* Delete confirmation modal */}
         <div id="delete_asset" className="modal fade delete-modal" role="dialog">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">

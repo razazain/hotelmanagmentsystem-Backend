@@ -8,17 +8,17 @@ const AddGuest = () => {
   const [formData, setFormData] = useState({
     userName: '',
     userPassword: '',
-    userRole: 'guest', // default value as per model
+    userRole: 'guest', 
     firstName: '',
     lastName: '',
     userEmail: '',
     phoneNumber: '',
-    status: 'active' // default status
+    status: 'active'
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [alertMessage, setAlertMessage] = useState(null); // To hold alert messages
-  const [alertType, setAlertType] = useState(''); // To hold alert type (success or danger)
+  const [alertMessage, setAlertMessage] = useState(null); 
+  const [alertType, setAlertType] = useState(''); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,9 +29,8 @@ const AddGuest = () => {
     try {
       await axios.post('/api/useraccount', formData);
       setAlertMessage('User added successfully!');
-      setAlertType('success'); // Show success alert
+      setAlertType('success'); 
 
-      // Clear form fields after successful submission
       setFormData({
         userName: '',
         userPassword: '',
@@ -44,10 +43,9 @@ const AddGuest = () => {
       });
     } catch (error) {
       setAlertMessage('Error adding user. Please try again.');
-      setAlertType('danger'); // Show error alert
+      setAlertType('danger'); 
     }
 
-    // Hide alert after 5 seconds
     setTimeout(() => {
       setAlertMessage(null);
     }, 5000);
@@ -67,14 +65,14 @@ const AddGuest = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Add Guest</h3>
+                <h3 className="page-title mt-5">Add User</h3>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-lg-12">
-              {/* Display Bootstrap alert message */}
+             
               {alertMessage && (
                 <div className={`alert alert-${alertType} alert-dismissible fade show`} role="alert">
                   {alertMessage}

@@ -16,7 +16,7 @@ app.use('/api/housekeeping', require('./routes/housekeepingRoute'));
 app.use('/api/feedback', require('./routes/feedbackRoute'));
 app.use('/api/maintenanceRequests', require('./routes/MaintenanceRequestRoute'));
 app.use('/api/payments', require('./routes/paymentRoute'));
-
+app.use('/uploads', express.static('uploads'));
 
 
 

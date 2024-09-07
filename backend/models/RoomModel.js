@@ -7,6 +7,7 @@ const roomSchema = new mongoose.Schema({
     status: { type: String, enum: ['available', 'occupied', 'cleaning', 'maintenance'], default: 'available' },
     bedType: { type: String },
     size: { type: String },
+    image: { type: String }, 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Room', roomSchema);

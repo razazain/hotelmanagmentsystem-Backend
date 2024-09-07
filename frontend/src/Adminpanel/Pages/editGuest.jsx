@@ -76,7 +76,6 @@ const EditGuest = () => {
             </div>
           )}
 
-          {/* Bootstrap alert for error message */}
           {errorMessage && (
             <div className="alert alert-danger" role="alert">
               {errorMessage}

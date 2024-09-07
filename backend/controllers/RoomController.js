@@ -1,4 +1,6 @@
+
 const RoomModel = require("../models/RoomModel");
+const upload = require('../middleware/upload');
 
 
 // @Request  GET
@@ -16,66 +18,42 @@ const getRoomDetails = async (req, res) => {
 // @access   private
 
 const createRoom = async (req, res) => {
-
-    const {
-        roomNumber,
-        type,
-        price,
-        status,
-        bedType,
-        size,
-       
-    } = req.body;
-
-
-    if (!roomNumber) {
-        return res.status(400).json({ error: 'Room number is required' });
-    }
-
-    if (!type) {
-        return res.status(400).json({ error: 'Room Type is required' });
-    }
-
-    if (!price) {
-        return res.status(400).json({ error: 'Room Price is required' });
-    }
-    if (!status) {
-        return res.status(400).json({ error: 'Room status is required' });
-    }
-
-    if (!bedType) {
-        return res.status(400).json({ error: 'Room bedtype is required' });
-    }
-
-    if (!size) {
-        return res.status(400).json({ error: 'Room size is required' });
-    }
-
-    const checkRoomNumber = await RoomModel.findOne({
-        "roomNumber": roomNumber
-    });
-    if (checkRoomNumber) {
-        return res.status(400).json({ error: "Room Number is already created try another one" })
-    }
-    
     try {
+     
+        if (!req.file) {
+            return res.status(400).json({ error: 'Room image is required' });
+        }
+
+        const {
+            roomNumber,
+            type,
+            price,
+            status,
+            bedType,
+            size,
+        } = req.body;
+
+        const checkRoomNumber = await RoomModel.findOne({ roomNumber });
+        if (checkRoomNumber) {
+            return res.status(400).json({ error: "Room Number already exists" });
+        }
+
         const newRoom = await RoomModel.create({
-            roomNumber: roomNumber,
-            type: type,
-            price: price,
-            status: status,
-            bedType: bedType,
-            size: size,
-            
-        })
+            roomNumber,
+            type,
+            price,
+            status,
+            bedType,
+            size,
+            image: req.file.filename,  
+        });
 
-        return res.status(200).json({ success: "Room Created Successfully" });
+        return res.status(200).json({ success: "Room Created Successfully", room: newRoom });
     } catch (err) {
-        console.log(` Some Error in Room Creation ${err}`)
+        console.log(`Error in Room Creation: ${err}`);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-}
-
+};
 
 // ----------------CREATE ROOM API END-------------------------
 
@@ -84,60 +62,35 @@ const createRoom = async (req, res) => {
 // @Route    /api/Room/id
 // @access   private
 
-const updateRoom = async (req,res) =>{
-
+const updateRoom = async (req, res) => {
     const id = req.params.id;
-    const {
-        roomNumber,
-        type,
-        price,
-        status,
-        bedType,
-        size, 
-    } = req.body;
 
-    if (!roomNumber) {
-        return res.status(400).json({ error: 'Room number is required' });
+    try {
+        const updatedData = {
+            roomNumber: req.body.roomNumber,
+            type: req.body.type,
+            price: req.body.price,
+            status: req.body.status,
+            bedType: req.body.bedType,
+            size: req.body.size,
+        };
+
+        if (req.file) {
+            updatedData.image = req.file.filename;  
+        }
+
+        const updatedRoom = await RoomModel.findByIdAndUpdate(id, updatedData, { new: true });
+
+        if (!updatedRoom) {
+            return res.status(404).json({ error: "Room not found" });
+        }
+
+        res.status(200).json({ success: "Room Updated Successfully", room: updatedRoom });
+    } catch (error) {
+        console.log(`Error updating room: ${error}`);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-
-    if (!type) {
-        return res.status(400).json({ error: 'Room Type is required' });
-    }
-
-    if (!price) {
-        return res.status(400).json({ error: 'Room Price is required' });
-    }
-    if (!status) {
-        return res.status(400).json({ error: 'Room status is required' });
-    }
-
-    if (!bedType) {
-        return res.status(400).json({ error: 'Room bedtype is required' });
-    }
-
-    if (!size) {
-        return res.status(400).json({ error: 'Room size is required' });
-    }
-
-
-
-
-    const updateData = {
-        roomNumber: roomNumber,
-        type: type,
-        price: price,
-        status: status,
-        bedType: bedType,
-        size: size,
-    }
-
-
-    const Room = await RoomModel.findByIdAndUpdate(id, updateData, { new: true });
-
-    console.log(Room);
-
-    res.status(200).json({ success: 'Room Updated Successfull' });
-}
+};
 
 // ----------------UPDATE ROOM API END-------------------------
 
