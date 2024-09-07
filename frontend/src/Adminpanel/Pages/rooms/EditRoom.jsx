@@ -1,6 +1,6 @@
 import React from 'react'
-import Header from '../Components/Header'
-import Sidebar from '../Components/Sidebar'
+import Header from '../../Components/Header'
+import Sidebar from '../../Components/Sidebar'
 
 const EditRoom = () => {
   return (

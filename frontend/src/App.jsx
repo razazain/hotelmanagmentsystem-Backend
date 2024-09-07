@@ -12,7 +12,7 @@ import HousekeepingUser from './Adminpanel/Pages/HousekeepingUser'
 import EditHousekeeping from './Adminpanel/Pages/EditHousekeeping'
 import Rooms from './Adminpanel/Pages/rooms/Rooms'
 import AddRoom from './Adminpanel/Pages/rooms/AddRoom'
-import EditRoom from './Adminpanel/Pages/EditRoom'
+import EditRoom from './Adminpanel/Pages/rooms/EditRoom'
 
 
 
