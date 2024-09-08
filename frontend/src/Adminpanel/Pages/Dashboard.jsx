@@ -1,8 +1,48 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../Components/Header';
 import Sidebar from '../Components/Sidebar';
+import axios from 'axios';
 
 const Dashboard = () => {
+	const [bookings, setBookings] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState('');
+
+	useEffect(() => {
+		const fetchBookings = async () => {
+			try {
+				const response = await axios.get('/api/booking');
+				setBookings(response.data);
+				setLoading(false);
+			} catch (err) {
+				console.log('Error fetching booking data')
+				setError(err)
+				setLoading(false);
+			}
+		};
+
+		fetchBookings();
+	}, []);
+
+
+	if (loading) {
+		return <p>Loading...</p>;
+	}
+
+	if (error) {
+		return <p>{error}</p>;
+	}
+
+
+
+
+
+
+
+
+
+
 	return (
 		<div>
 			<Header />
@@ -90,44 +130,48 @@ const Dashboard = () => {
 					</div>
 
 					<div className="row">
-						<div className="col-md-12 d-flex">
-							<div className="card card-table flex-fill">
-								<div className="card-header">
-									<h4 className="card-title float-left mt-2">Booking</h4>
-									<button type="button" className="btn btn-primary float-right veiwbutton">
-										View All
-									</button>
-								</div>
-								<div className="card-body">
+						<div className="col-sm-12">
+							<div className="card card-table">
+								<div className="card-body booking_card">
+									<div className="page-header">
+										<div className="row align-items-center">
+											<div className="col">
+												<div className="mt-5">
+													<h4 className="card-title float-left mt-2">
+														<b>All Bookings</b>
+													</h4>
+
+												</div>
+											</div>
+										</div>
+									</div>
 									<div className="table-responsive">
-										<table className="table table-hover table-center">
+										<table className="datatable table table-stripped table-hover table-center mb-0">
 											<thead>
 												<tr>
 													<th>Booking ID</th>
-													<th>Name</th>
-													<th>Email ID</th>
-													<th>Aadhar Number</th>
-													<th className="text-center">Room Type</th>
-													<th className="text-right">Number</th>
-													<th className="text-center">Status</th>
+													<th>User</th>
+													<th>Room</th>
+													<th>Check-In Date</th>
+													<th>Check-Out Date</th>
+													<th>Status</th>
+													<th>Total Amount</th>
+													<th>Payment Status</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td className="text-nowrap">
-														<div>BKG-0001</div>
-													</td>
-													<td className="text-nowrap">HELLO Bernal</td>
-													<td>dkfjal@gmail.com</td>
-													<td>12414786454545</td>
-													<td className="text-center">Double</td>
-													<td className="text-right">
-														<div>631-254-6480</div>
-													</td>
-													<td className="text-center">
-														<span className="badge badge-pill bg-success inv-badge">INACTIVE</span>
-													</td>
-												</tr>
+												{bookings.map((booking) => (
+													<tr key={booking._id}>
+														<td>{booking._id}</td>
+														<td>{booking.user ? booking.user.userName : 'N/A'}</td> {/* Adjust this based on your user data */}
+														<td>{booking.room ? booking.room.roomNumber : 'N/A'}</td> {/* Adjust this based on your room data */}
+														<td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
+														<td>{new Date(booking.checkOutDate).toLocaleDateString()}</td>
+														<td>{booking.status}</td>
+														<td>{booking.totalAmount}</td>
+														<td>{booking.paymentStatus}</td>
+													</tr>
+												))}
 											</tbody>
 										</table>
 									</div>

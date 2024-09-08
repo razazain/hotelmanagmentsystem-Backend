@@ -14,6 +14,31 @@ const getBookingDetails = async (req, res) => {
     }
 };
 
+// @Request  GET
+// @Route    /api/booking/:id
+// @access   private
+const getBookingById = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const booking = await BookingModel.findById(id).populate('user room');
+
+        if (!booking) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+
+        res.status(200).json(booking);
+    } catch (err) {
+        console.error(`Error fetching booking by ID: ${err}`);
+        res.status(500).json({ error: "Failed to fetch booking" });
+    }
+};
+
+
+
+
+
+
 
 
 
@@ -131,5 +156,6 @@ module.exports = {
     getBookingDetails,
     createBooking,
     updateBooking,
-    deleteBooking
+    deleteBooking,
+    getBookingById
 };

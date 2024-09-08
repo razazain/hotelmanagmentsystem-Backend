@@ -13,6 +13,9 @@ import EditHousekeeping from './Adminpanel/Pages/HousekeepingUser/EditHousekeepi
 import Rooms from './Adminpanel/Pages/rooms/Rooms'
 import AddRoom from './Adminpanel/Pages/rooms/AddRoom'
 import EditRoom from './Adminpanel/Pages/rooms/EditRoom'
+import Booking from './Adminpanel/Pages/Booking/Booking'
+import AddBooking from './Adminpanel/Pages/Booking/AddBooking'
+import EditBooking from './Adminpanel/Pages/Booking/EditBooking'
 
 
 
@@ -45,6 +48,12 @@ const App = () => {
         <Route path='/Room' element={<Rooms/>} />
         <Route path='/addRoom' element={<AddRoom/>} />
         <Route path='/EditRoom/:id' element={<EditRoom/>} />
+
+        {/* Booking Routing */}
+        <Route path='/Booking' element={<Booking/>} />
+        <Route path='/AddBooking' element={<AddBooking/>} />
+        <Route path='/EditBooking/:id' element={<EditBooking/>} />
+
 
 
 

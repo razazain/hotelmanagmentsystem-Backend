@@ -77,6 +77,7 @@ const Rooms = () => {
                     <table className="datatable table table-stripped table-hover table-center mb-0">
                       <thead>
                         <tr>
+                        <th>Room ID</th>
                           <th>Room Number</th>
                           <th>Room Type</th>
                           <th>Price</th>
@@ -90,6 +91,7 @@ const Rooms = () => {
                       <tbody>
                         {rooms.map((room) => (
                           <tr key={room._id}>
+                            <td>{room._id}</td>
                             <td>{room.roomNumber}</td>
                             <td>{room.type}</td>
                             <td>{room.price}</td>

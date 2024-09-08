@@ -11,6 +11,27 @@ const getRoomDetails = async (req, res) => {
     res.status(200).json(roomDetail)
 }
 
+// @Request  GET BY ID
+// @Route    /api/Room/
+// @access   private
+const getRoomById = async (req, res) => {
+    
+    try {
+      const room = await RoomModel.findById(req.params.id);
+      if (!room) {
+        return res.status(404).json({ error: "Room not found" });
+      }
+      res.status(200).json(room);
+    } catch (error) {
+      console.log(`Error fetching room: ${error}`);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
+
+
+
+
 
 // ----------------CREATE ROOM API START-------------------------
 // @Request  POST
@@ -129,5 +150,6 @@ module.exports = {
     getRoomDetails,
     createRoom,
     updateRoom,
-    deleteRoom
+    deleteRoom,
+    getRoomById
 };

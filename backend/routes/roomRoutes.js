@@ -8,5 +8,5 @@ router.get('/', roomController.getRoomDetails);
 router.post('/', upload.single('image'), roomController.createRoom); 
 router.put('/:id', upload.single('image'), roomController.updateRoom);  
 router.delete('/:id', roomController.deleteRoom);
-
+ router.route('/:id').get(roomController.getRoomById)
 module.exports = router;
