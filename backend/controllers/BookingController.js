@@ -14,6 +14,25 @@ const getBookingDetails = async (req, res) => {
     }
 };
 
+
+// @Request  GET
+// @Route    /api/booking/active-count
+// @access   private
+const getActiveBookingCount = async (req, res) => {
+    try {
+        // Count bookings with status 'confirmed' or 'checkedIn'
+        const activeBookingCount = await BookingModel.countDocuments({
+            status: { $in: ['confirmed', 'checkedIn'] }
+        });
+        res.status(200).json({ activeBookingCount });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to count active bookings" });
+    }
+};
+
+
+
+
 // @Request  GET
 // @Route    /api/booking/:id
 // @access   private
@@ -93,8 +112,8 @@ const createBooking = async (req, res) => {
 const updateBooking = async (req, res) => {
     const id = req.params.id;
     const {
-        user,
-        room,
+        // user,
+        // room,
         checkInDate,
         checkOutDate,
         status,
@@ -104,8 +123,8 @@ const updateBooking = async (req, res) => {
 
     try {
         const updatedBooking = await BookingModel.findByIdAndUpdate(id, {
-            user,
-            room,
+            // user,
+            // room,
             checkInDate,
             checkOutDate,
             status,
@@ -157,5 +176,6 @@ module.exports = {
     createBooking,
     updateBooking,
     deleteBooking,
-    getBookingById
+    getBookingById,
+    getActiveBookingCount
 };

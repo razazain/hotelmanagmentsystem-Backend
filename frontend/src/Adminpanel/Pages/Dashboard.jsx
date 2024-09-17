@@ -8,6 +8,41 @@ const Dashboard = () => {
 	const [bookings, setBookings] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState('');
+	const [activeBookingCount, setActiveBookingCount] = useState(0);
+	const [availableRoomsCount, setAvailableRoomsCount] = useState(0);
+
+
+
+  useEffect(() => {
+    const fetchAvailableRoomsCount = async () => {
+      try {
+        const response = await axios.get('/api/room/available');
+        setAvailableRoomsCount(response.data.totalAvailableRooms);
+      } catch (error) {
+        console.error('Error fetching available rooms count:', error);
+      }
+    };
+    fetchAvailableRoomsCount();
+  }, []);
+
+
+
+
+    useEffect(() => {
+        const fetchActiveBookingCount = async () => {
+            try {
+                const response = await axios.get('/api/booking/active-count');
+                setActiveBookingCount(response.data.activeBookingCount);
+            } catch (error) {
+                console.error('Failed to fetch active booking count', error);
+            }
+        };
+
+        fetchActiveBookingCount();
+    }, []);
+
+
+
 
 	useEffect(() => {
 		const fetchBookings = async () => {
@@ -67,7 +102,7 @@ const Dashboard = () => {
 								<div className="card-body">
 									<div className="dash-widget-header">
 										<div>
-											<h3 className="card_widget_header">236</h3>
+											<h3 className="card_widget_header">{activeBookingCount}</h3>
 											<h6 className="text-muted">Total Booking</h6>
 										</div>
 										<div className="ml-auto mt-md-3 mt-lg-0">
@@ -101,8 +136,8 @@ const Dashboard = () => {
 								<div className="card-body">
 									<div className="dash-widget-header">
 										<div>
-											<h3 className="card_widget_header">180</h3>
-											<h6 className="text-muted">Total Rooms</h6>
+											<h3 className="card_widget_header">{availableRoomsCount}</h3>
+											<h6 className="text-muted">Total Available Rooms</h6>
 										</div>
 										<div className="ml-auto mt-md-3 mt-lg-0">
 											<span className="opacity-7 text-muted">

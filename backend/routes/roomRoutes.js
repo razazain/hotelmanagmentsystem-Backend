@@ -4,6 +4,8 @@ const roomController = require('../controllers/RoomController');
 const upload = require('../middleware/upload');
 
 
+
+router.get('/available', roomController.getAvailableRoomsCount);
 router.get('/', roomController.getRoomDetails);
 router.post('/', upload.single('image'), roomController.createRoom); 
 router.put('/:id', upload.single('image'), roomController.updateRoom);  

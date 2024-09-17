@@ -11,7 +11,7 @@ const AddBooking = () => {
     room: '',
     checkInDate: '',
     checkOutDate: '',
-    status: 'confirmed',
+    status: 'confirmed', // Default value for status
     totalAmount: '',
     paymentStatus: 'unpaid',
   });
@@ -25,11 +25,10 @@ const AddBooking = () => {
       try {
         const roomsRes = await axios.get('/api/room');
         const usersRes = await axios.get('/api/useraccount');
-        
-        // Filter rooms and users based on the criteria
+
         const filteredRooms = roomsRes.data.filter(room => room.status === 'available');
         const filteredUsers = usersRes.data.filter(user => user.userRole !== 'guest');
-        
+
         setRooms(filteredRooms);
         setUsers(filteredUsers);
       } catch (error) {
@@ -57,15 +56,12 @@ const AddBooking = () => {
     }
   };
 
-
   const today = new Date().toISOString().split('T')[0];
-
 
   return (
     <div>
       <Header />
       <Sidebar />
-
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="page-header">
@@ -122,7 +118,9 @@ const AddBooking = () => {
                       >
                         <option value="">Select User</option>
                         {users.map(user => (
-                          <option key={user._id} value={user._id}>{user.userName}</option>
+                          <option key={user._id} value={user._id}>
+                            {user.userName}
+                          </option>
                         ))}
                       </select>
                     </div>
@@ -140,8 +138,28 @@ const AddBooking = () => {
                       >
                         <option value="">Select Room</option>
                         {rooms.map(room => (
-                          <option key={room._id} value={room._id}>{room.roomNumber}</option>
+                          <option key={room._id} value={room._id}>
+                            {room.roomNumber}
+                          </option>
                         ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select
+                        name="status"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={bookingData.status}
+                        required
+                      >
+                        <option value="confirmed">Confirmed</option>
+                        <option value="canceled">Canceled</option>
+                        <option value="checkedIn">Checked In</option>
+                        <option value="checkedOut">Checked Out</option>
                       </select>
                     </div>
                   </div>
@@ -154,7 +172,8 @@ const AddBooking = () => {
                         name="checkInDate"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={bookingData.checkInDate} min={today} 
+                        value={bookingData.checkInDate}
+                        min={today}
                         required
                       />
                     </div>
@@ -169,7 +188,7 @@ const AddBooking = () => {
                         className="form-control"
                         onChange={handleInputChange}
                         value={bookingData.checkOutDate}
-                        min={today} 
+                        min={today}
                         required
                       />
                     </div>
@@ -205,7 +224,9 @@ const AddBooking = () => {
                     </div>
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Add Booking</button>
+                <button type="submit" className="btn btn-primary mt-3">
+                  Add Booking
+                </button>
               </form>
             </div>
           </div>

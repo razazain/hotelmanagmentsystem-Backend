@@ -8,8 +8,8 @@ const EditBooking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [bookingData, setBookingData] = useState({
-    user: '',
-    room: '',
+    // user: '',
+    // room: '',
     checkInDate: '',
     checkOutDate: '',
     status: 'confirmed',
@@ -18,8 +18,8 @@ const EditBooking = () => {
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [rooms, setRooms] = useState([]);
-  const [users, setUsers] = useState([]);
+  // const [rooms, setRooms] = useState([]);
+  // const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchBooking = async () => {
@@ -28,33 +28,33 @@ const EditBooking = () => {
         const booking = bookingRes.data;
         setBookingData({
           ...booking,
-          checkInDate: booking.checkInDate.split('T')[0], // Format date for input
-          checkOutDate: booking.checkOutDate.split('T')[0], // Format date for input
+          checkInDate: booking.checkInDate.split('T')[0],
+          checkOutDate: booking.checkOutDate.split('T')[0],
         });
       } catch (error) {
         setErrorMessage('Error fetching booking data');
       }
     };
 
-    const fetchRoomsAndUsers = async () => {
-      try {
-        const roomsRes = await axios.get('/api/room');
-        const usersRes = await axios.get('/api/useraccount');
-        
-        // Filter rooms and users based on the criteria
-        const filteredRooms = roomsRes.data.filter(room => room.status === 'available');
-        const filteredUsers = usersRes.data.filter(user => user.userRole !== 'guest');
-        
-        setRooms(filteredRooms);
-        setUsers(filteredUsers);
-      } catch (error) {
-        setErrorMessage('Error fetching rooms and users');
-      }
-    };
+    //   const fetchRoomsAndUsers = async () => {
+    //     try {
+    //       const roomsRes = await axios.get('/api/room');
+    //       const usersRes = await axios.get('/api/useraccount');
 
-    fetchBooking();
-    fetchRoomsAndUsers();
-  }, [id]);
+    //       const filteredRooms = roomsRes.data.filter(room => room.status === 'available');
+    //       const filteredUsers = usersRes.data.filter(user => user.userRole !== 'guest');
+
+    //       setRooms(filteredRooms);
+    //       setUsers(filteredUsers);
+    //     } catch (error) {
+    //       setErrorMessage('Error fetching rooms and users');
+    //     }
+    //   };
+
+     fetchBooking();
+    //   fetchRoomsAndUsers();
+  }, [id]
+  );
 
   const handleInputChange = (e) => {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
@@ -67,14 +67,13 @@ const EditBooking = () => {
       await axios.put(`/api/booking/${id}`, bookingData);
       setSuccessMessage('Booking updated successfully!');
       setTimeout(() => {
-        navigate('/bookings');
+        navigate('/Booking');
       }, 2000);
     } catch (error) {
       setErrorMessage('Error updating booking');
     }
   };
 
-  // Get today's date in yyyy-mm-dd format
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -126,7 +125,7 @@ const EditBooking = () => {
             <div className="col-lg-12">
               <form onSubmit={handleSubmit}>
                 <div className="row formtype">
-                  <div className="col-md-4">
+                  {/* <div className="col-md-4">
                     <div className="form-group">
                       <label>User</label>
                       <select
@@ -160,6 +159,24 @@ const EditBooking = () => {
                         ))}
                       </select>
                     </div>
+                  </div> */}
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select
+                        name="status"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={bookingData.status}
+                        required
+                      >
+                        <option value="confirmed">Confirmed</option>
+                        <option value="canceled">Canceled</option>
+                        <option value="checkedIn">Checked In</option>
+                        <option value="checkedOut">Checked Out</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="col-md-4">
@@ -171,8 +188,8 @@ const EditBooking = () => {
                         className="form-control"
                         onChange={handleInputChange}
                         value={bookingData.checkInDate}
-                        min={today}  // Restrict past dates
-                        required
+                        min={today}
+                        readOnly
                       />
                     </div>
                   </div>
@@ -185,8 +202,8 @@ const EditBooking = () => {
                         name="checkOutDate"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={bookingData.checkOutDate}
-                        min={today}  // Restrict past dates
+                        value={bookingData.checkOutDate} 
+                        min={today}
                         required
                       />
                     </div>

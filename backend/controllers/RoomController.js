@@ -11,6 +11,21 @@ const getRoomDetails = async (req, res) => {
     res.status(200).json(roomDetail)
 }
 
+
+// @Request  GET
+// @Route    /api/rooms/available
+// @access   private
+const getAvailableRoomsCount = async (req, res) => {
+    try {
+        const availableRoomsCount = await RoomModel.countDocuments({ status: 'available' });
+        res.status(200).json({ totalAvailableRooms: availableRoomsCount });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch available rooms count' });
+    }
+};
+
+
+
 // @Request  GET BY ID
 // @Route    /api/Room/
 // @access   private
@@ -151,5 +166,6 @@ module.exports = {
     createRoom,
     updateRoom,
     deleteRoom,
-    getRoomById
+    getRoomById,
+    getAvailableRoomsCount
 };

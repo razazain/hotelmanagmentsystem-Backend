@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter,Routes,Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from './Adminpanel/Pages/Dashboard'
 import GuestUser from './Adminpanel/Pages/GuestUser/GuestUser'
 import AddGuest from './Adminpanel/Pages/GuestUser/addGuest'
@@ -16,6 +16,8 @@ import EditRoom from './Adminpanel/Pages/rooms/EditRoom'
 import Booking from './Adminpanel/Pages/Booking/Booking'
 import AddBooking from './Adminpanel/Pages/Booking/AddBooking'
 import EditBooking from './Adminpanel/Pages/Booking/EditBooking'
+import Payment from './Adminpanel/Pages/Payment/Payement'
+import AddPayment from './Adminpanel/Pages/Payment/AddPayment'
 
 
 
@@ -27,34 +29,37 @@ const App = () => {
         {/* Admin Panel */}
 
         {/* Dashboard Routing */}
-        <Route path='/Dashboard' element={<Dashboard/>} />
+        <Route path='/Dashboard' element={<Dashboard />} />
 
         {/* User Routing*/}
-        <Route path='/GuestUser' element={<GuestUser/>} />
-        <Route path='/addGuest' element={<AddGuest/>} />
-        <Route path='/editGuest/:id' element={<EditGuest/>} />
+        <Route path='/GuestUser' element={<GuestUser />} />
+        <Route path='/addGuest' element={<AddGuest />} />
+        <Route path='/editGuest/:id' element={<EditGuest />} />
 
-        <Route path='/AdminUser' element={<AdminUser/>} />
-        <Route path='/EditAdmin/:id' element={<EditAdmin/>} />
+        <Route path='/AdminUser' element={<AdminUser />} />
+        <Route path='/EditAdmin/:id' element={<EditAdmin />} />
 
-        <Route path='/ManagerUser' element={<ManagerUser/>} />
-        <Route path='/EditManager/:id' element={<EditManager/>} />
+        <Route path='/ManagerUser' element={<ManagerUser />} />
+        <Route path='/EditManager/:id' element={<EditManager />} />
 
-        <Route path='/HousekeepingUser' element={<HousekeepingUser/>} />
-        <Route path='/EditHousekeeping/:id' element={<EditHousekeeping/>} />
+        <Route path='/HousekeepingUser' element={<HousekeepingUser />} />
+        <Route path='/EditHousekeeping/:id' element={<EditHousekeeping />} />
 
 
         {/* Rooms Routing */}
-        <Route path='/Room' element={<Rooms/>} />
-        <Route path='/addRoom' element={<AddRoom/>} />
-        <Route path='/EditRoom/:id' element={<EditRoom/>} />
+        <Route path='/Room' element={<Rooms />} />
+        <Route path='/addRoom' element={<AddRoom />} />
+        <Route path='/EditRoom/:id' element={<EditRoom />} />
 
         {/* Booking Routing */}
-        <Route path='/Booking' element={<Booking/>} />
-        <Route path='/AddBooking' element={<AddBooking/>} />
-        <Route path='/EditBooking/:id' element={<EditBooking/>} />
+        <Route path='/Booking' element={<Booking />} />
+        <Route path='/AddBooking' element={<AddBooking />} />
+        <Route path='/EditBooking/:id' element={<EditBooking />} />
 
-
+        {/* Payment Routing */}
+        <Route path='/Payment' element={<Payment/>} />
+        <Route path='/AddPayment' element={<AddPayment/>} />
+        {/* <Route path='/EditBooking/:id' element={<EditBooking />} /> */}
 
 
 
