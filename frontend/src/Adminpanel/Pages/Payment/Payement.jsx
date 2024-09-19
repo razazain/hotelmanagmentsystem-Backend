@@ -101,7 +101,7 @@ const Payment = () => {
                                                                     <i className="fas fa-ellipsis-v ellipse_color"></i>
                                                                 </Link>
                                                                 <div className="dropdown-menu dropdown-menu-right">
-                                                                    <Link className="dropdown-item" to={`/editPayment/${payment._id}`}>
+                                                                    <Link className="dropdown-item" to={`/EditPayment/${payment._id}`}>
                                                                         <i className="fas fa-pencil-alt m-r-5"></i> Edit
                                                                     </Link>
                                                                     <Link className="dropdown-item" to="#" data-toggle="modal" data-target="#delete_payment"

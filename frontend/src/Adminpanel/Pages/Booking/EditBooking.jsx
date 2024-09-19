@@ -188,8 +188,8 @@ const EditBooking = () => {
                         className="form-control"
                         onChange={handleInputChange}
                         value={bookingData.checkInDate}
-                        min={today}
-                        readOnly
+                       
+                        required
                       />
                     </div>
                   </div>

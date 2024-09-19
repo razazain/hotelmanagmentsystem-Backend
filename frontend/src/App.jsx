@@ -18,6 +18,9 @@ import AddBooking from './Adminpanel/Pages/Booking/AddBooking'
 import EditBooking from './Adminpanel/Pages/Booking/EditBooking'
 import Payment from './Adminpanel/Pages/Payment/Payement'
 import AddPayment from './Adminpanel/Pages/Payment/AddPayment'
+import EditPayment from './Adminpanel/Pages/Payment/EditPayment'
+import MaintenanceRequest from './Adminpanel/Pages/MaintainanceRequest/MaintainanceRequest'
+import AddMaintainanceRequest from './Adminpanel/Pages/MaintainanceRequest/AddMaintainanceRequest'
 
 
 
@@ -57,10 +60,14 @@ const App = () => {
         <Route path='/EditBooking/:id' element={<EditBooking />} />
 
         {/* Payment Routing */}
-        <Route path='/Payment' element={<Payment/>} />
-        <Route path='/AddPayment' element={<AddPayment/>} />
-        {/* <Route path='/EditBooking/:id' element={<EditBooking />} /> */}
+        <Route path='/Payment' element={<Payment />} />
+        <Route path='/AddPayment' element={<AddPayment />} />
+        <Route path='/EditPayment/:id' element={<EditPayment />} />
 
+        {/* Payment Routing */}
+        <Route path='/MaintainanceRequest' element={<MaintenanceRequest />} />
+      <Route path='/AddMaintainanceRequest' element={<AddMaintainanceRequest />} />
+        {/* <Route path='/EditPayment/:id' element={<EditPayment />} />  */}
 
 
       </Routes>

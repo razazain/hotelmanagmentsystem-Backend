@@ -20,7 +20,11 @@ const AddPayment = () => {
     const fetchBookings = async () => {
       try {
         const bookingsRes = await axios.get('/api/booking');
-        setBookings(bookingsRes.data);
+        
+        // Filter bookings with paymentStatus 'unpaid'
+        const unpaidBookings = bookingsRes.data.filter(booking => booking.paymentStatus === 'unpaid');
+        
+        setBookings(unpaidBookings);
       } catch (error) {
         setErrorMessage('Error fetching bookings');
       }
@@ -107,7 +111,9 @@ const AddPayment = () => {
                         <option value="">Select Booking</option>
                         {bookings.map(booking => (
                           <option key={booking._id} value={booking._id}>
-                            {`Booking ID: ${booking._id}`}
+                            {`ID: ${booking._id}-
+                            Payment Status: ${booking.paymentStatus}-
+                            Amount: ${booking.totalAmount}`}
                           </option>
                         ))}
                       </select>
@@ -122,7 +128,6 @@ const AddPayment = () => {
                         name="amount"
                         className="form-control"
                         onChange={handleInputChange}
-                       
                         value={paymentData.amount}
                         required
                       />

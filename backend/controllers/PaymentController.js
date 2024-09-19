@@ -63,13 +63,14 @@ const createPayment = async (req, res) => {
 
 const updatePayment = async (req, res) => {
     const { id } = req.params;
-    const { booking, amount, paymentMethod, paymentStatus } = req.body;
+    const { booking, amount, paymentMethod, paymentDate, paymentStatus } = req.body;
 
     try {
         const updatedPayment = await PaymentModel.findByIdAndUpdate(
             id,
             {
                 booking,
+                paymentDate,
                 amount,
                 paymentMethod,
                 paymentStatus

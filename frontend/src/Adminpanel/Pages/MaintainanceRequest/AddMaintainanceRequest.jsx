@@ -4,21 +4,22 @@ import Header from '../../Components/Header';
 import Sidebar from '../../Components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
-const AddBooking = () => {
+const AddMaintenanceRequest = () => {
   const navigate = useNavigate();
-  const [bookingData, setBookingData] = useState({
-    user: '',
+  const [maintenanceData, setMaintenanceData] = useState({
     room: '',
-    checkInDate: '',
-    checkOutDate: '',
-    status: 'confirmed', // Default value for status
-    totalAmount: '',
-    paymentStatus: 'unpaid',
+    reportedBy: '',
+    issue: '',
+    status: 'pending', // Default value for status
+    resolvedBy: '',
+    resolutionDetails: '',
+    resolvedDate: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [rooms, setRooms] = useState([]);
   const [users, setUsers] = useState([]);
+  const [housekeepingUsers, setHousekeepingUsers] = useState([]);
 
   useEffect(() => {
     const fetchRoomsAndUsers = async () => {
@@ -26,11 +27,15 @@ const AddBooking = () => {
         const roomsRes = await axios.get('/api/room');
         const usersRes = await axios.get('/api/useraccount');
 
-        const filteredRooms = roomsRes.data.filter(room => room.status === 'available');
-        const filteredUsers = usersRes.data.filter(user => user.userRole !== 'guest');
+        // No filtering for rooms, fetch all rooms
+        setRooms(roomsRes.data);
 
-        setRooms(filteredRooms);
-        setUsers(filteredUsers);
+        // Filtering users based on role
+        const reportedByUsers = usersRes.data.filter(user => user.userRole !== 'guest');
+        const resolvedByUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
+
+        setUsers(reportedByUsers);
+        setHousekeepingUsers(resolvedByUsers);
       } catch (error) {
         setErrorMessage('Error fetching rooms and users');
       }
@@ -39,24 +44,22 @@ const AddBooking = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+    setMaintenanceData({ ...maintenanceData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post('/api/booking', bookingData);
-      setSuccessMessage('Booking added successfully!');
+      await axios.post('/api/maintenanceRequests', maintenanceData);
+      setSuccessMessage('Maintenance request added successfully!');
       setTimeout(() => {
-        navigate('/Booking');
+        navigate('/MaintenanceRequests');
       }, 2000);
     } catch (error) {
-      setErrorMessage('Error adding booking');
+      setErrorMessage('Error adding maintenance request');
     }
   };
-
-  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div>
@@ -67,7 +70,7 @@ const AddBooking = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Add Booking</h3>
+                <h3 className="page-title mt-5">Add Maintenance Request</h3>
               </div>
             </div>
           </div>
@@ -108,32 +111,12 @@ const AddBooking = () => {
                 <div className="row formtype">
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>User</label>
-                      <select
-                        name="user"
-                        className="form-control"
-                        onChange={handleInputChange}
-                        value={bookingData.user}
-                        required
-                      >
-                        <option value="">Select User</option>
-                        {users.map(user => (
-                          <option key={user._id} value={user._id}>
-                            {user.userName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="form-group">
                       <label>Room</label>
                       <select
                         name="room"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={bookingData.room}
+                        value={maintenanceData.room}
                         required
                       >
                         <option value="">Select Room</option>
@@ -148,84 +131,102 @@ const AddBooking = () => {
 
                   <div className="col-md-4">
                     <div className="form-group">
+                      <label>Reported By</label>
+                      <select
+                        name="reportedBy"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={maintenanceData.reportedBy}
+                        required
+                      >
+                        <option value="">Select User</option>
+                        {users.map(user => (
+                          <option key={user._id} value={user._id}>
+                            {user.userName} - {user.userRole}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Issue</label>
+                      <input
+                        type="text"
+                        name="issue"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={maintenanceData.issue}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
                       <label>Status</label>
                       <select
                         name="status"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={bookingData.status}
+                        value={maintenanceData.status}
                         required
                       >
-                        <option value="confirmed">Confirmed</option>
-                        <option value="canceled">Canceled</option>
-                        <option value="checkedIn">Checked In</option>
-                        <option value="checkedOut">Checked Out</option>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
                       </select>
                     </div>
                   </div>
 
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>Check-In Date</label>
-                      <input
-                        type="date"
-                        name="checkInDate"
-                        className="form-control"
-                        onChange={handleInputChange}
-                        value={bookingData.checkInDate}
-                        min={today}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label>Check-Out Date</label>
-                      <input
-                        type="date"
-                        name="checkOutDate"
-                        className="form-control"
-                        onChange={handleInputChange}
-                        value={bookingData.checkOutDate}
-                        min={today}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label>Total Amount</label>
-                      <input
-                        type="number"
-                        name="totalAmount"
-                        className="form-control"
-                        onChange={handleInputChange}
-                        value={bookingData.totalAmount}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label>Payment Status</label>
+                      <label>Resolved By</label>
                       <select
-                        name="paymentStatus"
+                        name="resolvedBy"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={bookingData.paymentStatus}
-                        readonly
+                        value={maintenanceData.resolvedBy}
                       >
-                        <option value="unpaid">Unpaid</option>
-                       
+                        <option value="">Select User (Optional)</option>
+                        {housekeepingUsers.map(user => (
+                          <option key={user._id} value={user._id}>
+                            {user.userName} - {user.userRole}
+                          </option>
+                        ))}
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Resolution Details</label>
+                      <input
+                        type="text"
+                        name="resolutionDetails"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={maintenanceData.resolutionDetails}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Resolved Date</label>
+                      <input
+                        type="date"
+                        name="resolvedDate"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={maintenanceData.resolvedDate}
+                      />
                     </div>
                   </div>
                 </div>
                 <button type="submit" className="btn btn-primary mt-3">
-                  Add Booking
+                  Add Maintenance Request
                 </button>
               </form>
             </div>
@@ -236,4 +237,4 @@ const AddBooking = () => {
   );
 };
 
-export default AddBooking;
+export default AddMaintenanceRequest;
