@@ -2,73 +2,73 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../../Components/Header';
 import Sidebar from '../../Components/Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddMaintenanceRequest = () => {
+const EditHousekeepingrec = () => {
   const navigate = useNavigate();
-  const [maintenanceData, setMaintenanceData] = useState({
+  const { id } = useParams();
+  const [housekeepingData, setHousekeepingData] = useState({
     room: '',
-    reportedBy: '',
-    issue: '',
-    status: 'pending', // Default value for status
-    resolvedBy: '',
-    resolutionDetails: '',
-    resolvedDate: '',
+    assignedTo: '',
+    task: '',
+    status: 'pending',
+    scheduledTime: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [rooms, setRooms] = useState([]);
   const [users, setUsers] = useState([]);
- // const [housekeepingUsers, setHousekeepingUsers] = useState([]);
 
   useEffect(() => {
+    const fetchHousekeeping = async () => {
+      try {
+        const housekeepingRes = await axios.get(`/api/housekeeping/${id}`);
+        const housekeeping = housekeepingRes.data;
+        setHousekeepingData({
+          ...housekeeping,
+          scheduledTime: housekeeping.scheduledTime.split('T')[0],
+        });
+      } catch (error) {
+        setErrorMessage('Error fetching housekeeping data');
+      }
+    };
+
     const fetchRoomsAndUsers = async () => {
       try {
-        // Fetch rooms and users data from respective APIs
-        const [roomsRes, usersRes] = await Promise.all([
-          axios.get('/api/room'),
-          axios.get('/api/useraccount'),
-        ]);
-
-        // No filtering for rooms, fetch all rooms
-        setRooms(roomsRes.data);
-
-        // Filtering users based on role
-        const reportedByUsers = usersRes.data.filter(user => user.userRole !== 'guest');
-        //const resolvedByUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
-
-        setUsers(reportedByUsers);
-       // setHousekeepingUsers(resolvedByUsers);
+        const roomsRes = await axios.get('/api/room');
+        const usersRes = await axios.get('/api/useraccount');
+        
+        setRooms(roomsRes.data);  // Assuming you want to show all rooms
+        const housekeepingUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
+        setUsers(housekeepingUsers);
       } catch (error) {
         setErrorMessage('Error fetching rooms and users');
       }
     };
+
+    fetchHousekeeping();
     fetchRoomsAndUsers();
-  }, []);
+  }, [id]);
 
   const handleInputChange = (e) => {
-    setMaintenanceData({ ...maintenanceData, [e.target.name]: e.target.value });
+    setHousekeepingData({ ...housekeepingData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Send POST request to create a maintenance request
-      await axios.post('/api/maintenanceRequests', {
-        room: maintenanceData.room,
-        reportedBy: maintenanceData.reportedBy,
-        issue: maintenanceData.issue,
-      });
-
-      setSuccessMessage('Maintenance request added successfully!');
+      await axios.put(`/api/housekeeping/${id}`, housekeepingData);
+      setSuccessMessage('Housekeeping task updated successfully!');
       setTimeout(() => {
-        navigate('/MaintainanceRequest');
+        navigate('/Housekeeping');
       }, 2000);
     } catch (error) {
-      setErrorMessage('Error adding maintenance request');
+      setErrorMessage('Error updating housekeeping task');
     }
   };
+
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <div>
@@ -79,7 +79,7 @@ const AddMaintenanceRequest = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Add Maintenance Request</h3>
+                <h3 className="page-title mt-5">Edit Housekeeping</h3>
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@ const AddMaintenanceRequest = () => {
                         name="room"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.room}
+                        value={housekeepingData.room}
                         required
                       >
                         <option value="">Select Room</option>
@@ -140,18 +140,18 @@ const AddMaintenanceRequest = () => {
 
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>Reported By</label>
+                      <label>Assigned To</label>
                       <select
-                        name="reportedBy"
+                        name="assignedTo"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.reportedBy}
+                        value={housekeepingData.assignedTo}
                         required
                       >
                         <option value="">Select User</option>
                         {users.map(user => (
                           <option key={user._id} value={user._id}>
-                            {user.userName} - {user.userRole}
+                            {user.userName}
                           </option>
                         ))}
                       </select>
@@ -160,21 +160,51 @@ const AddMaintenanceRequest = () => {
 
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>Issue</label>
+                      <label>Task</label>
                       <input
                         type="text"
-                        name="issue"
+                        name="task"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.issue}
+                        value={housekeepingData.task}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select
+                        name="status"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={housekeepingData.status}
+                        required
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Scheduled Time</label>
+                      <input
+                        type="date"
+                        name="scheduledTime"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={housekeepingData.scheduledTime}
+                        min={today}
                         required
                       />
                     </div>
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">
-                  Add Maintenance Request
-                </button>
+                <button type="submit" className="btn btn-primary mt-3">Update Task</button>
               </form>
             </div>
           </div>
@@ -184,4 +214,4 @@ const AddMaintenanceRequest = () => {
   );
 };
 
-export default AddMaintenanceRequest;
+export default EditHousekeepingrec;

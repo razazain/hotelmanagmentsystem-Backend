@@ -21,6 +21,10 @@ import AddPayment from './Adminpanel/Pages/Payment/AddPayment'
 import EditPayment from './Adminpanel/Pages/Payment/EditPayment'
 import MaintenanceRequest from './Adminpanel/Pages/MaintainanceRequest/MaintainanceRequest'
 import AddMaintainanceRequest from './Adminpanel/Pages/MaintainanceRequest/AddMaintainanceRequest'
+import EditMaintainanceRequest from './Adminpanel/Pages/MaintainanceRequest/EditMaintainanceRequest'
+import Housekeeping from './Adminpanel/Pages/HouseKeeping/Housekeeping'
+import AddHousekeeping from './Adminpanel/Pages/HouseKeeping/AddHousekeeping'
+import EditHousekeepingrec from './Adminpanel/Pages/HouseKeeping/EditHousekeepingrec'
 
 
 
@@ -64,10 +68,15 @@ const App = () => {
         <Route path='/AddPayment' element={<AddPayment />} />
         <Route path='/EditPayment/:id' element={<EditPayment />} />
 
-        {/* Payment Routing */}
+        {/* Maintanance Routing */}
         <Route path='/MaintainanceRequest' element={<MaintenanceRequest />} />
-      <Route path='/AddMaintainanceRequest' element={<AddMaintainanceRequest />} />
-        {/* <Route path='/EditPayment/:id' element={<EditPayment />} />  */}
+        <Route path='/AddMaintainanceRequest' element={<AddMaintainanceRequest />} />
+        <Route path='/EditMaintainanceRequest/:id' element={<EditMaintainanceRequest />} />
+
+        {/* Housekeeping Routing */}
+        <Route path='/Housekeeping' element={<Housekeeping />} />
+        <Route path='/AddHousekeeping' element={<AddHousekeeping />} />
+        <Route path='/EditHousekeepingrec/:id' element={<EditHousekeepingrec />} />
 
 
       </Routes>

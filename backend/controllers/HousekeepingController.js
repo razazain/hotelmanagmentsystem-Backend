@@ -12,6 +12,28 @@ const getHousekeepingDetails = async (req, res) => {
     }
 };
 
+
+// @Request  GET by ID
+// @Route    /api/housekeeping/:id
+// @access   private
+const getHousekeepingById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const housekeepingDetail = await HousekeepingModel.findById(id).populate('room assignedTo');
+
+        if (!housekeepingDetail) {
+            return res.status(404).json({ error: "Housekeeping task not found" });
+        }
+
+        res.status(200).json(housekeepingDetail);
+    } catch (error) {
+        res.status(500).json({ error: "Server Error" });
+    }
+};
+
+
+
 // @Request  POST
 // @Route    /api/housekeeping
 // @access   private
@@ -87,5 +109,6 @@ module.exports = {
     getHousekeepingDetails,
     createHousekeeping,
     updateHousekeeping,
-    deleteHousekeeping
+    deleteHousekeeping,
+    getHousekeepingById
 };

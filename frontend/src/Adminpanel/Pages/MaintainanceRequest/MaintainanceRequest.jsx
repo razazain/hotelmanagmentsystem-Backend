@@ -115,7 +115,7 @@ const MaintenanceRequest = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <Link
                                                                         className="dropdown-item"
-                                                                        to={`/editMaintenanceRequest/${request._id}`}
+                                                                        to={`/EditMaintainanceRequest/${request._id}`}
                                                                     >
                                                                         <i className="fas fa-pencil-alt m-r-5"></i> Edit
                                                                     </Link>

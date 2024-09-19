@@ -4,41 +4,31 @@ import Header from '../../Components/Header';
 import Sidebar from '../../Components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
-const AddMaintenanceRequest = () => {
+const AddHousekeeping = () => {
   const navigate = useNavigate();
-  const [maintenanceData, setMaintenanceData] = useState({
+  const [housekeepingData, setHousekeepingData] = useState({
     room: '',
-    reportedBy: '',
-    issue: '',
+    assignedTo: '',
+    task: '',
     status: 'pending', // Default value for status
-    resolvedBy: '',
-    resolutionDetails: '',
-    resolvedDate: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [rooms, setRooms] = useState([]);
   const [users, setUsers] = useState([]);
- // const [housekeepingUsers, setHousekeepingUsers] = useState([]);
 
   useEffect(() => {
     const fetchRoomsAndUsers = async () => {
       try {
-        // Fetch rooms and users data from respective APIs
-        const [roomsRes, usersRes] = await Promise.all([
-          axios.get('/api/room'),
-          axios.get('/api/useraccount'),
-        ]);
+        const roomsRes = await axios.get('/api/room');
+        const usersRes = await axios.get('/api/useraccount');
 
-        // No filtering for rooms, fetch all rooms
+        // Filter only available rooms (or all rooms based on your logic)
         setRooms(roomsRes.data);
 
-        // Filtering users based on role
-        const reportedByUsers = usersRes.data.filter(user => user.userRole !== 'guest');
-        //const resolvedByUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
-
-        setUsers(reportedByUsers);
-       // setHousekeepingUsers(resolvedByUsers);
+        // Filter users for housekeeping staff only
+        const housekeepingUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
+        setUsers(housekeepingUsers);
       } catch (error) {
         setErrorMessage('Error fetching rooms and users');
       }
@@ -47,26 +37,20 @@ const AddMaintenanceRequest = () => {
   }, []);
 
   const handleInputChange = (e) => {
-    setMaintenanceData({ ...maintenanceData, [e.target.name]: e.target.value });
+    setHousekeepingData({ ...housekeepingData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // Send POST request to create a maintenance request
-      await axios.post('/api/maintenanceRequests', {
-        room: maintenanceData.room,
-        reportedBy: maintenanceData.reportedBy,
-        issue: maintenanceData.issue,
-      });
-
-      setSuccessMessage('Maintenance request added successfully!');
+      await axios.post('/api/housekeeping', housekeepingData);
+      setSuccessMessage('Housekeeping task added successfully!');
       setTimeout(() => {
-        navigate('/MaintainanceRequest');
+        navigate('/Housekeeping');
       }, 2000);
     } catch (error) {
-      setErrorMessage('Error adding maintenance request');
+      setErrorMessage('Error adding housekeeping task');
     }
   };
 
@@ -79,7 +63,7 @@ const AddMaintenanceRequest = () => {
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Add Maintenance Request</h3>
+                <h3 className="page-title mt-5">Add Housekeeping Task</h3>
               </div>
             </div>
           </div>
@@ -125,7 +109,7 @@ const AddMaintenanceRequest = () => {
                         name="room"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.room}
+                        value={housekeepingData.room}
                         required
                       >
                         <option value="">Select Room</option>
@@ -140,15 +124,15 @@ const AddMaintenanceRequest = () => {
 
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>Reported By</label>
+                      <label>Assigned To</label>
                       <select
-                        name="reportedBy"
+                        name="assignedTo"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.reportedBy}
+                        value={housekeepingData.assignedTo}
                         required
                       >
-                        <option value="">Select User</option>
+                        <option value="">Select Housekeeper</option>
                         {users.map(user => (
                           <option key={user._id} value={user._id}>
                             {user.userName} - {user.userRole}
@@ -160,20 +144,37 @@ const AddMaintenanceRequest = () => {
 
                   <div className="col-md-4">
                     <div className="form-group">
-                      <label>Issue</label>
+                      <label>Task</label>
                       <input
                         type="text"
-                        name="issue"
+                        name="task"
                         className="form-control"
                         onChange={handleInputChange}
-                        value={maintenanceData.issue}
+                        value={housekeepingData.task}
                         required
                       />
                     </div>
                   </div>
+
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select
+                        name="status"
+                        className="form-control"
+                        onChange={handleInputChange}
+                        value={housekeepingData.status}
+                        required
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="in-progress">In Progress</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <button type="submit" className="btn btn-primary mt-3">
-                  Add Maintenance Request
+                  Add Housekeeping Task
                 </button>
               </form>
             </div>
@@ -184,4 +185,4 @@ const AddMaintenanceRequest = () => {
   );
 };
 
-export default AddMaintenanceRequest;
+export default AddHousekeeping;
