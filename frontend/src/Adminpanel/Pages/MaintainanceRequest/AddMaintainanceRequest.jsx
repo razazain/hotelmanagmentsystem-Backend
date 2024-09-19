@@ -54,7 +54,7 @@ const AddMaintenanceRequest = () => {
       await axios.post('/api/maintenanceRequests', maintenanceData);
       setSuccessMessage('Maintenance request added successfully!');
       setTimeout(() => {
-        navigate('/MaintenanceRequests');
+        navigate('/MaintainanceRequest');
       }, 2000);
     } catch (error) {
       setErrorMessage('Error adding maintenance request');
