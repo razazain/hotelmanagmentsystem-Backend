@@ -1,17 +1,18 @@
 const HousekeepingModel = require("../models/HousekeepingModel");
+const mongoose = require('mongoose');
 
 // @Request  GET
 // @Route    /api/housekeeping
 // @access   private
 const getHousekeepingDetails = async (req, res) => {
     try {
-        const housekeepingDetails = await HousekeepingModel.find().populate('room assignedTo');
+        const housekeepingDetails = await HousekeepingModel.find()
+            .populate('room assignedTo');
         res.status(200).json(housekeepingDetails);
     } catch (error) {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: "Failed to fetch housekeeping tasks" });
     }
 };
-
 
 // @Request  GET by ID
 // @Route    /api/housekeeping/:id
@@ -19,8 +20,13 @@ const getHousekeepingDetails = async (req, res) => {
 const getHousekeepingById = async (req, res) => {
     const { id } = req.params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid housekeeping ID" });
+    }
+
     try {
-        const housekeepingDetail = await HousekeepingModel.findById(id).populate('room assignedTo');
+        const housekeepingDetail = await HousekeepingModel.findById(id)
+            .populate('room assignedTo');
 
         if (!housekeepingDetail) {
             return res.status(404).json({ error: "Housekeeping task not found" });
@@ -28,20 +34,22 @@ const getHousekeepingById = async (req, res) => {
 
         res.status(200).json(housekeepingDetail);
     } catch (error) {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: "Failed to fetch housekeeping task" });
     }
 };
-
-
 
 // @Request  POST
 // @Route    /api/housekeeping
 // @access   private
 const createHousekeeping = async (req, res) => {
-    const { room, assignedTo, task, status  } = req.body;
+    const { room, assignedTo, task, status } = req.body;
 
-    if (!room || !assignedTo || !task  ) {
-        return res.status(400).json({ error: 'All fields are required' });
+    if (!room || !assignedTo || !task) {
+        return res.status(400).json({ error: 'Room, AssignedTo, and Task are required' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(room) || !mongoose.Types.ObjectId.isValid(assignedTo)) {
+        return res.status(400).json({ error: 'Invalid room or assignedTo ID' });
     }
 
     try {
@@ -50,11 +58,10 @@ const createHousekeeping = async (req, res) => {
             assignedTo,
             task,
             status,
-            
         });
         res.status(201).json({ success: "Housekeeping task created successfully", data: newHousekeeping });
     } catch (error) {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: "Failed to create housekeeping task" });
     }
 };
 
@@ -63,16 +70,31 @@ const createHousekeeping = async (req, res) => {
 // @access   private
 const updateHousekeeping = async (req, res) => {
     const { id } = req.params;
-    const { room, assignedTo, task, status  } = req.body;
+    const {
+        //room, 
+        // assignedTo, 
+        task, status } = req.body;
 
-    if (!room || !assignedTo || !task ) {
-        return res.status(400).json({ error: 'All fields are required' });
+    if (!task) {
+        return res.status(400).json({ error: 'Task is required' });
     }
+
+    // if (room && !mongoose.Types.ObjectId.isValid(room)) {
+    //     return res.status(400).json({ error: 'Invalid room ID' });
+    // }
+
+    // if (assignedTo && !mongoose.Types.ObjectId.isValid(assignedTo)) {
+    //     return res.status(400).json({ error: 'Invalid assignedTo ID' });
+    // }
 
     try {
         const updatedHousekeeping = await HousekeepingModel.findByIdAndUpdate(
             id,
-            { room, assignedTo, task, status  },
+            {
+                //  room,
+                // assignedTo, 
+                task, status
+            },
             { new: true }
         );
 
@@ -82,7 +104,7 @@ const updateHousekeeping = async (req, res) => {
 
         res.status(200).json({ success: "Housekeeping task updated successfully", data: updatedHousekeeping });
     } catch (error) {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: "Failed to update housekeeping task" });
     }
 };
 
@@ -91,6 +113,10 @@ const updateHousekeeping = async (req, res) => {
 // @access   private
 const deleteHousekeeping = async (req, res) => {
     const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid housekeeping ID" });
+    }
 
     try {
         const deletedHousekeeping = await HousekeepingModel.findByIdAndDelete(id);
@@ -101,7 +127,7 @@ const deleteHousekeeping = async (req, res) => {
 
         res.status(200).json({ success: "Housekeeping task deleted successfully" });
     } catch (error) {
-        res.status(500).json({ error: "Server Error" });
+        res.status(500).json({ error: "Failed to delete housekeeping task" });
     }
 };
 
@@ -110,5 +136,5 @@ module.exports = {
     createHousekeeping,
     updateHousekeeping,
     deleteHousekeeping,
-    getHousekeepingById
+    getHousekeepingById,
 };

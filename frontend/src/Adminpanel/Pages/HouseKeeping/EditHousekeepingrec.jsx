@@ -11,43 +11,39 @@ const EditHousekeepingrec = () => {
     room: '',
     assignedTo: '',
     task: '',
-    status: 'pending',
+    status: 'pending', // default to pending
     scheduledTime: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [rooms, setRooms] = useState([]);
-  const [users, setUsers] = useState([]);
+ // const [rooms, setRooms] = useState([]);
+ // const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchHousekeeping = async () => {
       try {
         const housekeepingRes = await axios.get(`/api/housekeeping/${id}`);
         const housekeeping = housekeepingRes.data;
-        setHousekeepingData({
-          ...housekeeping,
-          scheduledTime: housekeeping.scheduledTime.split('T')[0],
-        });
+        setHousekeepingData(housekeeping);
       } catch (error) {
         setErrorMessage('Error fetching housekeeping data');
       }
     };
 
-    const fetchRoomsAndUsers = async () => {
-      try {
-        const roomsRes = await axios.get('/api/room');
-        const usersRes = await axios.get('/api/useraccount');
+    // const fetchRoomsAndUsers = async () => {
+    //   try {
+    //     const roomsRes = await axios.get('/api/room');
+    //     const usersRes = await axios.get('/api/useraccount');
         
-        setRooms(roomsRes.data);  // Assuming you want to show all rooms
-        const housekeepingUsers = usersRes.data.filter(user => user.userRole === 'housekeeping');
-        setUsers(housekeepingUsers);
-      } catch (error) {
-        setErrorMessage('Error fetching rooms and users');
-      }
-    };
+    //     setRooms(roomsRes.data);
+    //     setUsers(usersRes.data.filter(user => user.userRole === 'housekeeping')); // filter housekeeping users
+    //   } catch (error) {
+    //     setErrorMessage('Error fetching rooms and users');
+    //   }
+    // };
 
     fetchHousekeeping();
-    fetchRoomsAndUsers();
+    //fetchRoomsAndUsers();
   }, [id]);
 
   const handleInputChange = (e) => {
@@ -68,18 +64,17 @@ const EditHousekeepingrec = () => {
     }
   };
 
-  const today = new Date().toISOString().split('T')[0];
-
   return (
     <div>
       <Header />
       <Sidebar />
+
       <div className="page-wrapper">
         <div className="content container-fluid">
           <div className="page-header">
             <div className="row align-items-center">
               <div className="col">
-                <h3 className="page-title mt-5">Edit Housekeeping</h3>
+                <h3 className="page-title mt-5">Edit Housekeeping Task</h3>
               </div>
             </div>
           </div>
@@ -118,7 +113,8 @@ const EditHousekeepingrec = () => {
             <div className="col-lg-12">
               <form onSubmit={handleSubmit}>
                 <div className="row formtype">
-                  <div className="col-md-4">
+                  
+                  {/* <div className="col-md-4">
                     <div className="form-group">
                       <label>Room</label>
                       <select
@@ -136,9 +132,9 @@ const EditHousekeepingrec = () => {
                         ))}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="col-md-4">
+                  {/* <div className="col-md-4">
                     <div className="form-group">
                       <label>Assigned To</label>
                       <select
@@ -156,7 +152,7 @@ const EditHousekeepingrec = () => {
                         ))}
                       </select>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="col-md-4">
                     <div className="form-group">
@@ -183,28 +179,16 @@ const EditHousekeepingrec = () => {
                         required
                       >
                         <option value="pending">Pending</option>
-                        <option value="in-progress">In Progress</option>
                         <option value="completed">Completed</option>
+                        <option value="in-progress">In-Progress</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="col-md-4">
-                    <div className="form-group">
-                      <label>Scheduled Time</label>
-                      <input
-                        type="date"
-                        name="scheduledTime"
-                        className="form-control"
-                        onChange={handleInputChange}
-                        value={housekeepingData.scheduledTime}
-                        min={today}
-                        required
-                      />
-                    </div>
-                  </div>
+                  
+
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Update Task</button>
+                <button type="submit" className="btn btn-primary mt-3">Update Housekeeping Task</button>
               </form>
             </div>
           </div>

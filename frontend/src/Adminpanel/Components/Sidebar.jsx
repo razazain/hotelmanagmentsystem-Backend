@@ -36,10 +36,6 @@ const Sidebar = () => {
                             <li className="submenu"> <Link to="/Housekeeping"><i className="fas fa-suitcase"></i> <span> Housekeeping </span>
                             </Link>
                             </li>
-
-                            <li className="submenu"> <Link to="/Feedback"><i className="fas fa-suitcase"></i> <span> Feedback </span>
-                            </Link>
-                            </li>
                         </ul>
                     </div>
                 </div>
