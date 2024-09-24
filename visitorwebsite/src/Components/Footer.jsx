@@ -15,7 +15,7 @@ const Footer = () => {
                         <div class="ft-about">
                             <div class="logo">
                                 <a href="#">
-                                    <img src="img/footer-logo.png" alt=""/>
+                                    <h5 style={{color: 'white'}}>LuxuryStay Hospitality</h5>
                                 </a>
                             </div>
                             <p>We inspire and reach millions of travelers<br /> across 90 local websites</p>
@@ -33,7 +33,7 @@ const Footer = () => {
                             <h6>Contact Us</h6>
                             <ul>
                                 <li>(12) 345 67890</li>
-                                <li>info.colorlib@gmail.com</li>
+                                <li>info.luxurystay@gmail.com</li>
                                 <li>856 Cordia Extension Apt. 356, Lake, United State</li>
                             </ul>
                         </div>

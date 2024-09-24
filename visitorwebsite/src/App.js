@@ -14,6 +14,9 @@ import About from './Pages/About'
 import Contact from './Pages/Contact'
 import Registration from './Pages/Registration'
 import Login from './Pages/Login'
+import Booknow from './Pages/Booknow'
+import Profile from './Pages/Profile'
+
 
 
 const App = () => {
@@ -36,7 +39,8 @@ const App = () => {
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/register' element={<Registration/>}/>
         <Route path='/login' element={<Login/>}/>
-
+        <Route path='/booknow' element={<Booknow/>}/>
+        <Route path='/profile' element={<Profile/>}/>
     </Routes>
     
     <Footer/>
