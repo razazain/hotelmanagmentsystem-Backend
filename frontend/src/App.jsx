@@ -60,6 +60,8 @@ import HEditMaintainanceRequest from './Housekeepingpanel/Pages/MaintainanceRequ
 import HHousekeeping from './Housekeepingpanel/Pages/HouseKeeping/HHousekeeping'
 import HAddHousekeeping from './Housekeepingpanel/Pages/HouseKeeping/HAddHousekeeping'
 import HEditHousekeepingrec from './Housekeepingpanel/Pages/HouseKeeping/HEditHousekeepingrec'
+import Login from './publicPage/Login'
+import Profile from './publicPage/Profile'
 
 
 
@@ -70,7 +72,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+
+
+
+      <Route path='/' element={<Login />} />
+      <Route path='/profile' element={<Profile />} />
+
+
+
         {/* Admin Panel */}
+
         {/* Dashboard Routing */}
         <Route path='/Dashboard' element={<Dashboard />} />
 

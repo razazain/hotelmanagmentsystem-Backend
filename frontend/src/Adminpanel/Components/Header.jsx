@@ -22,9 +22,7 @@ const Header = () => {
                             className="user-img"><b>PROFILE</b></span> </Link>
                         <div className="dropdown-menu">
                             <div className="user-header">
-                                <Link className="dropdown-item" to="#">My Profile</Link> <Link className="dropdown-item"
-                                    to="#">Account Settings</Link> <Link className="dropdown-item"
-                                        to="#">Logout</Link>
+                                <Link className="dropdown-item" to="/profile">My Profile</Link>
                             </div>
                         </div>
                     </li>
