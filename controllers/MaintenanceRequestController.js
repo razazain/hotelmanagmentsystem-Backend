@@ -1,4 +1,4 @@
-const MaintenanceRequestModel = require('../models/MaintenanceRequestModel');
+const MaintenanceRequestModel = require('../models/MaintenancerequestModel.js');
 
 // ----------------GET ALL MAINTENANCE REQUESTS API START-------------------------
 // @Request  GET
