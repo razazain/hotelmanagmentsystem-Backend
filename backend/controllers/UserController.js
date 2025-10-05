@@ -53,73 +53,72 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$
 
 
 const createUserAccount = async (req, res) => {
-
+  try {
     const {
-
-        userName,
-        userPassword,
-        firstName,
-        lastName,
-        userEmail,
-        phoneNumber,
-        status,
-        userRole
-        
+      userName,
+      userPassword,
+      firstName,
+      lastName,
+      userEmail,
+      phoneNumber,
+      status,
+      userRole
     } = req.body;
 
-
-    //testing credentials is according to requirment
-    const emailCheck = emailRegex.test(userEmail);
-    const nameCheck = nameRegex.test(userName);
-    const passwordCheck = passwordRegex.test(userPassword);
-
-
-
-
-    if (emailCheck == true) {
-        if (passwordCheck == true) {
-            if (nameCheck == true) {
-
-                //password hashing
-                const salt = await bcrypt.genSalt(10);
-                const hashedPassword = await bcrypt.hash(userPassword, salt);
-
-
-                //checking email is already rgistered
-                var Email_availability_db = await UserModel.findOne({
-                    "userEmail": userEmail
-                });
-
-                if (Email_availability_db) {
-                    return res.status(400).json({ error: "Email is already taken" })
-                }
-
-                const newUser = await UserModel.create({
-                    userName: userName,
-                    userEmail: userEmail,
-                    userPassword: hashedPassword,
-                    firstName: firstName,
-                    lastName: lastName,
-                    phoneNumber: phoneNumber,
-                    userRole: userRole,
-                    status: status,
-                    //by default Role is guest after registeration admin can update the user Role 
-                    //set default role is guest in UserModel
-                })
-
-
-                return res.status(200).json({ success: "account register successfully" })
-
-            } else {
-                res.status(400).json({ error: "name error" })
-            }
-        } else {
-            res.status(400).json({ error: "password error" })
-        }
-    } else {
-        res.status(400).json({ error: "email error" })
+    // ✅ Validate email
+    if (!emailRegex.test(userEmail)) {
+      return res.status(400).json({
+        error: "Invalid email format. Example: user@example.com"
+      });
     }
-}
+
+    // ✅ Validate username
+    if (!nameRegex.test(userName)) {
+      return res.status(400).json({
+        error: "Invalid username. Only letters and spaces are allowed."
+      });
+    }
+
+    // ✅ Validate password
+    if (!passwordRegex.test(userPassword)) {
+      return res.status(400).json({
+        error:
+          "Password must be at least 8 characters long, include at least one uppercase letter, one lowercase letter, one number, and one special character."
+      });
+    }
+
+    // ✅ Check if email already exists
+    const existingUser = await UserModel.findOne({ userEmail });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email is already taken." });
+    }
+
+    // ✅ Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userPassword, salt);
+
+    // ✅ Create new user
+    await UserModel.create({
+      userName,
+      userEmail,
+      userPassword: hashedPassword,
+      firstName,
+      lastName,
+      phoneNumber,
+      userRole, // default is guest in your model
+      status
+    });
+
+    return res.status(201).json({
+      success: "Account registered successfully."
+    });
+  } catch (error) {
+    console.error("Error creating user account:", error);
+    return res.status(500).json({
+      error: "An internal server error occurred. Please try again later."
+    });
+  }
+};
 
 
 //---------------------------User Registration API End ------------------
